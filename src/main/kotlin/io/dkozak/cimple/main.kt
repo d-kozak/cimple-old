@@ -67,41 +67,49 @@ class ExpressionAstCreatingVisitor(
     }
 }
 
-fun interpret(program: Program) {
+
+class InterpretingTreeVisitor {
+
     val symbolTable: MutableMap<VariableReference, Int> = mutableMapOf()
-    for (node in program.statements) {
-        if (node is VariableAssignment) {
-            symbolTable[node.variable] = evaluateExpression(node.expression, symbolTable)
-        } else if (node is PrintStatement) {
-            println(evaluateExpression(node.expression, symbolTable))
+
+    fun start(program: Program) {
+        for (node in program.statements) {
+            if (node is VariableAssignment) {
+                symbolTable[node.variable] = evaluateExpression(node.expression)
+            } else if (node is PrintStatement) {
+                println(evaluateExpression(node.expression))
+            }
         }
+    }
+
+    fun evaluateExpression(expression: Expression) = when (expression) {
+        is VariableReference -> symbolTable[expression]!!
+        is IntegerLiteral -> expression.value
+        is BinaryExpression -> evaluateBinaryExpression(expression)
+        else -> throw IllegalArgumentException("Unknown type of expression ${expression.javaClass}")
+    }
+
+    fun evaluateBinaryExpression(expression: BinaryExpression): Int = when (expression.operation) {
+        "+" -> evaluateExpression(expression.left) + evaluateExpression(expression.right)
+        "-" -> evaluateExpression(expression.left) - evaluateExpression(expression.right)
+        "*" -> evaluateExpression(expression.left) * evaluateExpression(expression.right)
+        "/" -> evaluateExpression(expression.left) / evaluateExpression(expression.right)
+
+        "==" -> if (evaluateExpression(expression.left) == evaluateExpression(expression.right)) 1 else 0
+        "!=" -> if (evaluateExpression(expression.left) != evaluateExpression(expression.right)) 1 else 0
+        "<" -> if (evaluateExpression(expression.left) < evaluateExpression(expression.right)) 1 else 0
+        "<=" -> if (evaluateExpression(expression.left) <= evaluateExpression(expression.right)) 1 else 0
+        ">" -> if (evaluateExpression(expression.left) > evaluateExpression(expression.right)) 1 else 0
+        ">=" -> if (evaluateExpression(expression.left) >= evaluateExpression(expression.right)) 1 else 0
+
+        else -> throw UnsupportedOperationException("Unknown type of operation: ${expression.operation}")
     }
 }
 
 
-fun evaluateExpression(expression: Expression, symbolTable: Map<VariableReference, Int>) = when (expression) {
-    is VariableReference -> symbolTable[expression]!!
-    is IntegerLiteral -> expression.value
-    is BinaryExpression -> evaluateBinaryExpression(expression, symbolTable)
-    else -> throw IllegalArgumentException("Unknown type of expression ${expression.javaClass}")
+fun interpret(program: Program) {
+    InterpretingTreeVisitor().start(program)
 }
-
-fun evaluateBinaryExpression(expression: BinaryExpression, symbolTable: Map<VariableReference, Int>): Int = when (expression.operation) {
-    "+" -> evaluateExpression(expression.left, symbolTable) + evaluateExpression(expression.right, symbolTable)
-    "-" -> evaluateExpression(expression.left, symbolTable) - evaluateExpression(expression.right, symbolTable)
-    "*" -> evaluateExpression(expression.left, symbolTable) * evaluateExpression(expression.right, symbolTable)
-    "/" -> evaluateExpression(expression.left, symbolTable) / evaluateExpression(expression.right, symbolTable)
-
-    "==" -> if (evaluateExpression(expression.left, symbolTable) == evaluateExpression(expression.right, symbolTable)) 1 else 0
-    "!=" -> if (evaluateExpression(expression.left, symbolTable) != evaluateExpression(expression.right, symbolTable)) 1 else 0
-    "<" -> if (evaluateExpression(expression.left, symbolTable) < evaluateExpression(expression.right, symbolTable)) 1 else 0
-    "<=" -> if (evaluateExpression(expression.left, symbolTable) <= evaluateExpression(expression.right, symbolTable)) 1 else 0
-    ">" -> if (evaluateExpression(expression.left, symbolTable) > evaluateExpression(expression.right, symbolTable)) 1 else 0
-    ">=" -> if (evaluateExpression(expression.left, symbolTable) >= evaluateExpression(expression.right, symbolTable)) 1 else 0
-
-    else -> throw UnsupportedOperationException("Unknown type of operation: ${expression.operation}")
-}
-
 
 fun toAst(parseTree: ParseTree) = AstCreatingVisitor().visit(parseTree)
 
@@ -112,4 +120,6 @@ fun parse(input: String): CimpleParser.ProgramContext {
     val parser = CimpleParser(stream)
     return parser.program()
 }
+
+
 
