@@ -13,7 +13,7 @@ class End2End {
 
         val parseTree = parse(input)
         val ast = toAst(parseTree)
-        interpret(ast)
+        interpret(ast as Program)
     }
 
     @Test
@@ -25,7 +25,7 @@ class End2End {
         """.trimIndent()
         val parseTree = parse(input)
         val ast = toAst(parseTree)
-        interpret(ast)
+        interpret(ast as Program)
     }
 
     @Test
@@ -37,6 +37,6 @@ class End2End {
         """.trimIndent()
         val parseTree = parse(input)
         val ast = toAst(parseTree)
-        interpret(ast)
+        interpret(ast as Program)
     }
 }

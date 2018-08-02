@@ -3,7 +3,6 @@ package io.dkozak.cimple
 import org.antlr.v4.runtime.ANTLRInputStream
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTree
-import org.antlr.v4.runtime.tree.ParseTreeWalker
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -13,27 +12,28 @@ fun main(args: Array<String>) {
     val input = File(args[0]).readText()
     val parseTree = parse(input)
     val ast = toAst(parseTree)
-    interpret(ast)
+    interpret(ast as Program)
 }
 
-class AstBuildingListener : CimpleBaseListener() {
-
-    val statements: MutableList<AstNode> = mutableListOf()
+class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
 
     val symbolTable: MutableMap<String, VariableReference> = mutableMapOf()
 
-    override fun enterVariableAssignment(ctx: CimpleParser.VariableAssignmentContext) {
-        val name = ctx.ID().symbol.text
-        val variableReference = symbolTable.computeIfAbsent(name) { VariableReference(name) }
-        val expression = ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression())
-        statements.add(VariableAssignment(variableReference, expression))
+    override fun visitProgram(ctx: CimpleParser.ProgramContext): AstNode {
+        val nodes = ctx.statement()
+                .map { it.accept(this) }
+        return Program(nodes)
     }
 
-    override fun enterPrintStatement(ctx: CimpleParser.PrintStatementContext) {
+    override fun visitVariableAssignment(ctx: CimpleParser.VariableAssignmentContext): AstNode {
+        val reference = symbolTable.computeIfAbsent(ctx.ID().text) { VariableReference(ctx.ID().text) }
         val expression = ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression())
-        statements.add(PrintStatement(expression))
+        return VariableAssignment(reference, expression)
     }
 
+    override fun visitPrintStatement(ctx: CimpleParser.PrintStatementContext): AstNode = PrintStatement(
+            ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression())
+    )
 }
 
 class ExpressionAstCreatingVisitor(
@@ -67,9 +67,9 @@ class ExpressionAstCreatingVisitor(
     }
 }
 
-fun interpret(ast: List<AstNode>) {
+fun interpret(program: Program) {
     val symbolTable: MutableMap<VariableReference, Int> = mutableMapOf()
-    for (node in ast) {
+    for (node in program.statements) {
         if (node is VariableAssignment) {
             symbolTable[node.variable] = evaluateExpression(node.expression, symbolTable)
         } else if (node is PrintStatement) {
@@ -98,17 +98,13 @@ fun evaluateBinaryExpression(expression: BinaryExpression, symbolTable: Map<Vari
     "<=" -> if (evaluateExpression(expression.left, symbolTable) <= evaluateExpression(expression.right, symbolTable)) 1 else 0
     ">" -> if (evaluateExpression(expression.left, symbolTable) > evaluateExpression(expression.right, symbolTable)) 1 else 0
     ">=" -> if (evaluateExpression(expression.left, symbolTable) >= evaluateExpression(expression.right, symbolTable)) 1 else 0
-    
+
     else -> throw UnsupportedOperationException("Unknown type of operation: ${expression.operation}")
 }
 
 
-fun toAst(parseTree: ParseTree): List<AstNode> {
-    val walker = ParseTreeWalker()
-    val listener = AstBuildingListener()
-    walker.walk(listener, parseTree)
-    return listener.statements
-}
+fun toAst(parseTree: ParseTree) = AstCreatingVisitor().visit(parseTree)
+
 
 fun parse(input: String): CimpleParser.ProgramContext {
     val lexer = CimpleLexer(ANTLRInputStream(input))

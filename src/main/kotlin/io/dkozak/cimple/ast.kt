@@ -2,6 +2,8 @@ package io.dkozak.cimple
 
 interface AstNode
 
+data class Program(val statements: List<AstNode>) : AstNode
+
 abstract class Expression : AstNode
 
 data class VariableReference(
