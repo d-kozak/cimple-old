@@ -1,6 +1,5 @@
 // Generated from /home/dkozak/projects/cimple/src/main/kotlin/io/dkozak/cimple/Cimple.g4 by ANTLR 4.7
 package io.dkozak.cimple;
-
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -37,18 +36,84 @@ public interface CimpleListener extends ParseTreeListener {
     void exitStatement(CimpleParser.StatementContext ctx);
 
     /**
-     * Enter a parse tree produced by {@link CimpleParser#expression}.
+     * Enter a parse tree produced by the {@code varExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
      *
      * @param ctx the parse tree
      */
-    void enterExpression(CimpleParser.ExpressionContext ctx);
+    void enterVarExpr(CimpleParser.VarExprContext ctx);
 
     /**
-     * Exit a parse tree produced by {@link CimpleParser#expression}.
+     * Exit a parse tree produced by the {@code varExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
      *
      * @param ctx the parse tree
      */
-    void exitExpression(CimpleParser.ExpressionContext ctx);
+    void exitVarExpr(CimpleParser.VarExprContext ctx);
+
+    /**
+     * Enter a parse tree produced by the {@code binExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterBinExpr(CimpleParser.BinExprContext ctx);
+
+    /**
+     * Exit a parse tree produced by the {@code binExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitBinExpr(CimpleParser.BinExprContext ctx);
+
+    /**
+     * Enter a parse tree produced by the {@code intConstant}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterIntConstant(CimpleParser.IntConstantContext ctx);
+
+    /**
+     * Exit a parse tree produced by the {@code intConstant}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitIntConstant(CimpleParser.IntConstantContext ctx);
+
+    /**
+     * Enter a parse tree produced by the {@code bracketExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterBracketExpr(CimpleParser.BracketExprContext ctx);
+
+    /**
+     * Exit a parse tree produced by the {@code bracketExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitBracketExpr(CimpleParser.BracketExprContext ctx);
+
+    /**
+     * Enter a parse tree produced by the {@code logExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterLogExpr(CimpleParser.LogExprContext ctx);
+
+    /**
+     * Exit a parse tree produced by the {@code logExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitLogExpr(CimpleParser.LogExprContext ctx);
 
     /**
      * Enter a parse tree produced by {@link CimpleParser#variableAssignment}.

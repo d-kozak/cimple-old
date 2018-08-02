@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.atn.ParserATNSimulator;
 import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
@@ -232,20 +233,30 @@ public class CimpleParser extends Parser {
                 _errHandler.sync(this);
                 switch (_input.LA(1)) {
                     case LPAREN: {
+                        _localctx = new BracketExprContext(_localctx);
+                        _ctx = _localctx;
+                        _prevctx = _localctx;
+
                         setState(27);
                         match(LPAREN);
                         setState(28);
-                        expression(0);
+                        ((BracketExprContext) _localctx).expr = expression(0);
                         setState(29);
                         match(RPAREN);
                     }
                     break;
                     case INT: {
+                        _localctx = new IntConstantContext(_localctx);
+                        _ctx = _localctx;
+                        _prevctx = _localctx;
                         setState(31);
                         match(INT);
                     }
                     break;
                     case ID: {
+                        _localctx = new VarExprContext(_localctx);
+                        _ctx = _localctx;
+                        _prevctx = _localctx;
                         setState(32);
                         match(ID);
                     }
@@ -266,7 +277,7 @@ public class CimpleParser extends Parser {
                             _errHandler.sync(this);
                             switch (getInterpreter().adaptivePredict(_input, 3, _ctx)) {
                                 case 1: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(35);
                                     if (!(precpred(_ctx, 13)))
@@ -278,7 +289,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 2: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(38);
                                     if (!(precpred(_ctx, 12)))
@@ -290,7 +301,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 3: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(41);
                                     if (!(precpred(_ctx, 11)))
@@ -302,7 +313,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 4: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(44);
                                     if (!(precpred(_ctx, 10)))
@@ -314,7 +325,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 5: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(47);
                                     if (!(precpred(_ctx, 9)))
@@ -326,7 +337,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 6: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new LogExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(50);
                                     if (!(precpred(_ctx, 8)))
@@ -338,7 +349,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 7: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new LogExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(53);
                                     if (!(precpred(_ctx, 7)))
@@ -350,7 +361,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 8: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new LogExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(56);
                                     if (!(precpred(_ctx, 6)))
@@ -362,7 +373,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 9: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new LogExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(59);
                                     if (!(precpred(_ctx, 5)))
@@ -374,7 +385,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 10: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new LogExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(62);
                                     if (!(precpred(_ctx, 4)))
@@ -386,7 +397,7 @@ public class CimpleParser extends Parser {
                                 }
                                 break;
                                 case 11: {
-                                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                                    _localctx = new LogExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                                     setState(65);
                                     if (!(precpred(_ctx, 3)))
@@ -620,6 +631,12 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitProgram(this);
         }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitProgram(this);
+            else return visitor.visitChildren(this);
+        }
     }
 
     public static class StatementContext extends ParserRuleContext {
@@ -653,6 +670,12 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitStatement(this);
         }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitStatement(this);
+            else return visitor.visitChildren(this);
+        }
     }
 
     public static class ExpressionContext extends ParserRuleContext {
@@ -660,8 +683,48 @@ public class CimpleParser extends Parser {
             super(parent, invokingState);
         }
 
-        public TerminalNode LPAREN() {
-            return getToken(CimpleParser.LPAREN, 0);
+        public ExpressionContext() {
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_expression;
+        }
+
+        public void copyFrom(ExpressionContext ctx) {
+            super.copyFrom(ctx);
+        }
+    }
+
+    public static class VarExprContext extends ExpressionContext {
+        public VarExprContext(ExpressionContext ctx) {
+            copyFrom(ctx);
+        }
+
+        public TerminalNode ID() {
+            return getToken(CimpleParser.ID, 0);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).enterVarExpr(this);
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).exitVarExpr(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitVarExpr(this);
+            else return visitor.visitChildren(this);
+        }
+    }
+
+    public static class BinExprContext extends ExpressionContext {
+        public BinExprContext(ExpressionContext ctx) {
+            copyFrom(ctx);
         }
 
         public List<ExpressionContext> expression() {
@@ -670,18 +733,6 @@ public class CimpleParser extends Parser {
 
         public ExpressionContext expression(int i) {
             return getRuleContext(ExpressionContext.class, i);
-        }
-
-        public TerminalNode RPAREN() {
-            return getToken(CimpleParser.RPAREN, 0);
-        }
-
-        public TerminalNode INT() {
-            return getToken(CimpleParser.INT, 0);
-        }
-
-        public TerminalNode ID() {
-            return getToken(CimpleParser.ID, 0);
         }
 
         public TerminalNode MULT() {
@@ -702,6 +753,98 @@ public class CimpleParser extends Parser {
 
         public TerminalNode MINUS() {
             return getToken(CimpleParser.MINUS, 0);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).enterBinExpr(this);
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).exitBinExpr(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitBinExpr(this);
+            else return visitor.visitChildren(this);
+        }
+    }
+
+    public static class IntConstantContext extends ExpressionContext {
+        public IntConstantContext(ExpressionContext ctx) {
+            copyFrom(ctx);
+        }
+
+        public TerminalNode INT() {
+            return getToken(CimpleParser.INT, 0);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).enterIntConstant(this);
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).exitIntConstant(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitIntConstant(this);
+            else return visitor.visitChildren(this);
+        }
+    }
+
+    public static class BracketExprContext extends ExpressionContext {
+        public ExpressionContext expr;
+
+        public BracketExprContext(ExpressionContext ctx) {
+            copyFrom(ctx);
+        }
+
+        public TerminalNode LPAREN() {
+            return getToken(CimpleParser.LPAREN, 0);
+        }
+
+        public TerminalNode RPAREN() {
+            return getToken(CimpleParser.RPAREN, 0);
+        }
+
+        public ExpressionContext expression() {
+            return getRuleContext(ExpressionContext.class, 0);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).enterBracketExpr(this);
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).exitBracketExpr(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitBracketExpr(this);
+            else return visitor.visitChildren(this);
+        }
+    }
+
+    public static class LogExprContext extends ExpressionContext {
+        public LogExprContext(ExpressionContext ctx) {
+            copyFrom(ctx);
+        }
+
+        public List<ExpressionContext> expression() {
+            return getRuleContexts(ExpressionContext.class);
+        }
+
+        public ExpressionContext expression(int i) {
+            return getRuleContext(ExpressionContext.class, i);
         }
 
         public TerminalNode EQUALS() {
@@ -729,18 +872,19 @@ public class CimpleParser extends Parser {
         }
 
         @Override
-        public int getRuleIndex() {
-            return RULE_expression;
-        }
-
-        @Override
         public void enterRule(ParseTreeListener listener) {
-            if (listener instanceof CimpleListener) ((CimpleListener) listener).enterExpression(this);
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).enterLogExpr(this);
         }
 
         @Override
         public void exitRule(ParseTreeListener listener) {
-            if (listener instanceof CimpleListener) ((CimpleListener) listener).exitExpression(this);
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).exitLogExpr(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitLogExpr(this);
+            else return visitor.visitChildren(this);
         }
     }
 
@@ -779,6 +923,13 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitVariableAssignment(this);
         }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor)
+                return ((CimpleVisitor<? extends T>) visitor).visitVariableAssignment(this);
+            else return visitor.visitChildren(this);
+        }
     }
 
     public static class PrintStatementContext extends ParserRuleContext {
@@ -811,6 +962,13 @@ public class CimpleParser extends Parser {
         @Override
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitPrintStatement(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor)
+                return ((CimpleVisitor<? extends T>) visitor).visitPrintStatement(this);
+            else return visitor.visitChildren(this);
         }
     }
 
@@ -866,6 +1024,12 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitIf(this);
         }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitIf(this);
+            else return visitor.visitChildren(this);
+        }
     }
 
     public static class IfElseContext extends IfStatementContext {
@@ -910,6 +1074,12 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitIfElse(this);
         }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitIfElse(this);
+            else return visitor.visitChildren(this);
+        }
     }
 
     public static class BlockContext extends ParserRuleContext {
@@ -946,6 +1116,12 @@ public class CimpleParser extends Parser {
         @Override
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitBlock(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitBlock(this);
+            else return visitor.visitChildren(this);
         }
     }
 }

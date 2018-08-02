@@ -12,20 +12,20 @@ statement
 
 
 expression
-    : LPAREN expression RPAREN
-    | expression MULT expression
-    | expression DIV expression
-    | expression MOD expression
-    | expression PLUS expression
-    | expression MINUS expression
-    | expression EQUALS expression
-    | expression NOT_EQUALS expression
-    | expression LT expression
-    | expression LE expression
-    | expression GT expression
-    | expression GE expression
-    | INT
-    | ID
+    : LPAREN expr=expression RPAREN #bracketExpr
+    | expression MULT expression #binExpr
+    | expression DIV expression #binExpr
+    | expression MOD expression #binExpr
+    | expression PLUS expression #binExpr
+    | expression MINUS expression #binExpr
+    | expression EQUALS expression #logExpr
+    | expression NOT_EQUALS expression #logExpr
+    | expression LT expression #logExpr
+    | expression LE expression #logExpr
+    | expression GT expression #logExpr
+    | expression GE expression #logExpr
+    | INT #intConstant
+    | ID #varExpr
     ;
 
 
