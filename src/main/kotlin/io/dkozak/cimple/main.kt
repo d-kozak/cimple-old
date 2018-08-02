@@ -73,7 +73,16 @@ fun interpret(ast: List<AstNode>) {
 fun evaluateExpression(expression: Expression, symbolTable: Map<VariableReference, Int>) = when (expression) {
     is VariableReference -> symbolTable[expression]!!
     is IntegerLiteral -> expression.value
-    else -> TODO("Binary expressions implemented yet")
+    is BinaryExpression -> evaluateBinaryExpression(expression, symbolTable)
+    else -> throw IllegalArgumentException("Unknown type of expression ${expression.javaClass}")
+}
+
+fun evaluateBinaryExpression(expression: BinaryExpression, symbolTable: Map<VariableReference, Int>): Int = when (expression.operation) {
+    "+" -> evaluateExpression(expression.left, symbolTable) + evaluateExpression(expression.right, symbolTable)
+    "-" -> evaluateExpression(expression.left, symbolTable) - evaluateExpression(expression.right, symbolTable)
+    "*" -> evaluateExpression(expression.left, symbolTable) * evaluateExpression(expression.right, symbolTable)
+    "/" -> evaluateExpression(expression.left, symbolTable) / evaluateExpression(expression.right, symbolTable)
+    else -> throw UnsupportedOperationException("Unknown type of operation: ${expression.operation}")
 }
 
 
