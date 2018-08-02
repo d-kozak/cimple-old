@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.atn.ParserATNSimulator;
 import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
@@ -621,12 +620,6 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitProgram(this);
         }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitProgram(this);
-            else return visitor.visitChildren(this);
-        }
     }
 
     public static class StatementContext extends ParserRuleContext {
@@ -659,12 +652,6 @@ public class CimpleParser extends Parser {
         @Override
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitStatement(this);
-        }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitStatement(this);
-            else return visitor.visitChildren(this);
         }
     }
 
@@ -755,12 +742,6 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitExpression(this);
         }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitExpression(this);
-            else return visitor.visitChildren(this);
-        }
     }
 
     public static class VariableAssignmentContext extends ParserRuleContext {
@@ -798,13 +779,6 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitVariableAssignment(this);
         }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof CimpleVisitor)
-                return ((CimpleVisitor<? extends T>) visitor).visitVariableAssignment(this);
-            else return visitor.visitChildren(this);
-        }
     }
 
     public static class PrintStatementContext extends ParserRuleContext {
@@ -837,13 +811,6 @@ public class CimpleParser extends Parser {
         @Override
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitPrintStatement(this);
-        }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof CimpleVisitor)
-                return ((CimpleVisitor<? extends T>) visitor).visitPrintStatement(this);
-            else return visitor.visitChildren(this);
         }
     }
 
@@ -899,12 +866,6 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitIf(this);
         }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitIf(this);
-            else return visitor.visitChildren(this);
-        }
     }
 
     public static class IfElseContext extends IfStatementContext {
@@ -949,12 +910,6 @@ public class CimpleParser extends Parser {
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitIfElse(this);
         }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitIfElse(this);
-            else return visitor.visitChildren(this);
-        }
     }
 
     public static class BlockContext extends ParserRuleContext {
@@ -991,12 +946,6 @@ public class CimpleParser extends Parser {
         @Override
         public void exitRule(ParseTreeListener listener) {
             if (listener instanceof CimpleListener) ((CimpleListener) listener).exitBlock(this);
-        }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitBlock(this);
-            else return visitor.visitChildren(this);
         }
     }
 }
