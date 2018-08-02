@@ -39,4 +39,62 @@ class End2End {
         val ast = toAst(parseTree)
         interpret(ast as Program)
     }
+
+
+    @Test
+    fun ifStatement() {
+        val input = """
+            a = 10;
+            if(a >= 5){
+                print a;
+            }
+        """.trimIndent()
+        val parseTree = parse(input)
+        val ast = toAst(parseTree)
+        interpret(ast as Program)
+    }
+
+
+    @Test
+    fun ifStatementFalse() {
+        val input = """
+            a = 10;
+            if(a >= 50){
+                print a;
+            }
+        """.trimIndent()
+        val parseTree = parse(input)
+        val ast = toAst(parseTree)
+        interpret(ast as Program)
+    }
+
+    @Test
+    fun ifElseStatement() {
+        val input = """
+            a = 10;
+            if(a >= 5){
+                print a;
+            } else {
+                print 666;
+            }
+        """.trimIndent()
+        val parseTree = parse(input)
+        val ast = toAst(parseTree)
+        interpret(ast as Program)
+    }
+
+    @Test
+    fun ifElseStatementFalse() {
+        val input = """
+            a = 10;
+            if(a >= 50){
+                print a;
+            } else {
+                print 666;
+            }
+        """.trimIndent()
+        val parseTree = parse(input)
+        val ast = toAst(parseTree)
+        interpret(ast as Program)
+    }
 }

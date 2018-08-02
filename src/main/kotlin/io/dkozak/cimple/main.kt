@@ -34,6 +34,20 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
     override fun visitPrintStatement(ctx: CimpleParser.PrintStatementContext): AstNode = PrintStatement(
             ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression())
     )
+
+
+    override fun visitIf(ctx: CimpleParser.IfContext): AstNode {
+        val expression = ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression())
+        val block = ctx.block().statement().map { it.accept(this) }
+        return IfStatement(expression, block, emptyList())
+    }
+
+    override fun visitIfElse(ctx: CimpleParser.IfElseContext): AstNode {
+        val expression = ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression())
+        val thenBlock = ctx.block(0).statement().map { it.accept(this) }
+        val elseBlock = ctx.block(1).statement().map { it.accept(this) }
+        return IfStatement(expression, thenBlock, elseBlock)
+    }
 }
 
 class ExpressionAstCreatingVisitor(
@@ -73,11 +87,22 @@ class InterpretingTreeVisitor {
     val symbolTable: MutableMap<VariableReference, Int> = mutableMapOf()
 
     fun start(program: Program) {
-        for (node in program.statements) {
+        executeBlock(program.statements)
+    }
+
+    fun executeBlock(block: List<AstNode>) {
+        for (node in block) {
             if (node is VariableAssignment) {
                 symbolTable[node.variable] = evaluateExpression(node.expression)
             } else if (node is PrintStatement) {
                 println(evaluateExpression(node.expression))
+            } else if (node is IfStatement) {
+                val condition = evaluateExpression(node.expression)
+                if (condition != 0) {
+                    executeBlock(node.thenStatements)
+                } else {
+                    executeBlock(node.elseStatements)
+                }
             }
         }
     }
