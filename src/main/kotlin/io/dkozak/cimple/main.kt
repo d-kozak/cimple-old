@@ -56,6 +56,15 @@ class ExpressionAstCreatingVisitor(
         else -> UnresolvedBinaryExpression(ctx.children[1].text, ctx.expression(0).accept(this), ctx.expression(1).accept(this))
     }
 
+    override fun visitLogExpr(ctx: CimpleParser.LogExprContext): Expression = when (ctx.children[1].text) {
+        "==" -> BinaryExpression("==", ctx.expression(0).accept(this), ctx.expression(1).accept(this))
+        "!=" -> BinaryExpression("!=", ctx.expression(0).accept(this), ctx.expression(1).accept(this))
+        "<" -> BinaryExpression("<", ctx.expression(0).accept(this), ctx.expression(1).accept(this))
+        "<=" -> BinaryExpression("<=", ctx.expression(0).accept(this), ctx.expression(1).accept(this))
+        ">" -> BinaryExpression(">", ctx.expression(0).accept(this), ctx.expression(1).accept(this))
+        ">=" -> BinaryExpression(">=", ctx.expression(0).accept(this), ctx.expression(1).accept(this))
+        else -> UnresolvedBinaryExpression(ctx.children[1].text, ctx.expression(0).accept(this), ctx.expression(1).accept(this))
+    }
 }
 
 fun interpret(ast: List<AstNode>) {
@@ -82,6 +91,14 @@ fun evaluateBinaryExpression(expression: BinaryExpression, symbolTable: Map<Vari
     "-" -> evaluateExpression(expression.left, symbolTable) - evaluateExpression(expression.right, symbolTable)
     "*" -> evaluateExpression(expression.left, symbolTable) * evaluateExpression(expression.right, symbolTable)
     "/" -> evaluateExpression(expression.left, symbolTable) / evaluateExpression(expression.right, symbolTable)
+
+    "==" -> if (evaluateExpression(expression.left, symbolTable) == evaluateExpression(expression.right, symbolTable)) 1 else 0
+    "!=" -> if (evaluateExpression(expression.left, symbolTable) != evaluateExpression(expression.right, symbolTable)) 1 else 0
+    "<" -> if (evaluateExpression(expression.left, symbolTable) < evaluateExpression(expression.right, symbolTable)) 1 else 0
+    "<=" -> if (evaluateExpression(expression.left, symbolTable) <= evaluateExpression(expression.right, symbolTable)) 1 else 0
+    ">" -> if (evaluateExpression(expression.left, symbolTable) > evaluateExpression(expression.right, symbolTable)) 1 else 0
+    ">=" -> if (evaluateExpression(expression.left, symbolTable) >= evaluateExpression(expression.right, symbolTable)) 1 else 0
+    
     else -> throw UnsupportedOperationException("Unknown type of operation: ${expression.operation}")
 }
 
