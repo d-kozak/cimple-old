@@ -29,6 +29,13 @@ class InterpretingVisitor {
         is VariableReference -> symbolTable[expression]!!
         is IntegerLiteral -> expression.value
         is BinaryExpression -> evaluateBinaryExpression(expression)
+        is UnaryExpression -> evaluateUnaryExpression(expression)
+        else -> throw IllegalArgumentException("Unknown type of expression ${expression.javaClass}")
+    }
+
+    fun evaluateUnaryExpression(expression: UnaryExpression): Int = when (expression.operation) {
+        Operation.MINUS -> -evaluateExpression(expression.expression)
+        Operation.NOT -> if (evaluateExpression(expression.expression) != 0) 0 else 1
         else -> throw IllegalArgumentException("Unknown type of expression ${expression.javaClass}")
     }
 
