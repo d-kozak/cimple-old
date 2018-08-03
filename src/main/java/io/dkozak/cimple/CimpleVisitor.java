@@ -88,6 +88,14 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     T visitPrintStatement(CimpleParser.PrintStatementContext ctx);
 
     /**
+     * Visit a parse tree produced by {@link CimpleParser#inputStatement}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitInputStatement(CimpleParser.InputStatementContext ctx);
+
+    /**
      * Visit a parse tree produced by the {@code if}
      * labeled alternative in {@link CimpleParser#ifStatement}.
      *

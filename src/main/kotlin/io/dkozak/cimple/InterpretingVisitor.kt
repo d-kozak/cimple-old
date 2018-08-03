@@ -5,22 +5,35 @@ class InterpretingVisitor {
     val symbolTable: MutableMap<VariableReference, Int> = mutableMapOf()
 
     fun start(program: Program) {
-        executeBlock(program.statements)
+        executeStatements(program.statements)
     }
 
-    fun executeBlock(block: List<AstNode>) {
+    fun executeStatements(block: List<AstNode>) {
         for (node in block) {
-            if (node is VariableAssignment) {
-                symbolTable[node.variable] = evaluateExpression(node.expression)
-            } else if (node is PrintStatement) {
-                println(evaluateExpression(node.expression))
-            } else if (node is IfStatement) {
-                val condition = evaluateExpression(node.expression)
-                if (condition != 0) {
-                    executeBlock(node.thenStatements)
-                } else {
-                    executeBlock(node.elseStatements)
+            when (node) {
+                is VariableAssignment -> symbolTable[node.variable] = evaluateExpression(node.expression)
+                is PrintStatement -> println(evaluateExpression(node.expression))
+                is IfStatement -> {
+                    val condition = evaluateExpression(node.expression)
+                    if (condition != 0) {
+                        executeStatements(node.thenStatements)
+                    } else {
+                        executeStatements(node.elseStatements)
+                    }
                 }
+                is InputStatement -> {
+                    print("${node.variable.name}:")
+                    val input = readLine()
+                    if (input == null || input.isEmpty()) {
+                        throw IllegalArgumentException("No input value read")
+                    }
+                    try {
+                        symbolTable[node.variable] = input.toInt()
+                    } catch (ex: NumberFormatException) {
+                        throw IllegalArgumentException("Input ${input} is not an integer")
+                    }
+                }
+                else -> throw IllegalArgumentException("Unknown type of statement ${node.javaClass}")
             }
         }
     }

@@ -59,13 +59,17 @@ data class VariableAssignment(
 
 data class PrintStatement(
         val expression: Expression
-) : Expression()
+) : AstNode
+
+data class InputStatement(
+        val variable: VariableReference
+) : AstNode
 
 data class IfStatement(
         val expression: Expression,
         val thenStatements: List<AstNode>,
         val elseStatements: List<AstNode>
-) : Expression()
+) : AstNode
 
 
 

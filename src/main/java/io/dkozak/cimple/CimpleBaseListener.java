@@ -179,6 +179,24 @@ public class CimpleBaseListener implements CimpleListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterInputStatement(CimpleParser.InputStatementContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitInputStatement(CimpleParser.InputStatementContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterIf(CimpleParser.IfContext ctx) {
     }
 

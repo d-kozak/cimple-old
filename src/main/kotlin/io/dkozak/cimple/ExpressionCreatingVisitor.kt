@@ -23,7 +23,7 @@ class ExpressionAstCreatingVisitor(
         "-" -> createBinaryExpression(Operation.MINUS, ctx)
         "*" -> createBinaryExpression(Operation.MULT, ctx)
         "/" -> createBinaryExpression(Operation.DIV, ctx)
-        "mod" -> createBinaryExpression(Operation.MOD, ctx)
+        "%" -> createBinaryExpression(Operation.MOD, ctx)
         "==" -> createBinaryExpression(Operation.EQUALS, ctx)
         "!=" -> createBinaryExpression(Operation.NOT_EQUALS, ctx)
         "<" -> createBinaryExpression(Operation.LT, ctx)

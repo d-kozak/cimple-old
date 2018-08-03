@@ -6,6 +6,7 @@ program
 
 statement
     : variableAssignment
+    | inputStatement
     | printStatement
     | ifStatement
     ;
@@ -40,6 +41,10 @@ printStatement
     : PRINT expression SEMICOLON
     ;
 
+inputStatement
+    : INPUT ID SEMICOLON
+    ;
+
 ifStatement
     : IF LPAREN expression RPAREN block #if
     |  IF LPAREN expression RPAREN block ELSE block #ifElse
@@ -68,6 +73,7 @@ NOT : 'not';
 ASSIGN : '=';
 SEMICOLON : ';';
 PRINT : 'print';
+INPUT : 'input';
 
 IF : 'if';
 ELSE : 'else';

@@ -16,6 +16,11 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
         return VariableAssignment(reference, expression)
     }
 
+    override fun visitInputStatement(ctx: CimpleParser.InputStatementContext): AstNode {
+        val reference = symbolTable.computeIfAbsent(ctx.ID().text) { VariableReference(ctx.ID().text) }
+        return InputStatement(reference)
+    }
+
     override fun visitPrintStatement(ctx: CimpleParser.PrintStatementContext): AstNode = PrintStatement(
             ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression())
     )

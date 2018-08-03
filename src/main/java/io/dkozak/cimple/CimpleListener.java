@@ -144,6 +144,20 @@ public interface CimpleListener extends ParseTreeListener {
     void exitPrintStatement(CimpleParser.PrintStatementContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link CimpleParser#inputStatement}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterInputStatement(CimpleParser.InputStatementContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#inputStatement}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitInputStatement(CimpleParser.InputStatementContext ctx);
+
+    /**
      * Enter a parse tree produced by the {@code if}
      * labeled alternative in {@link CimpleParser#ifStatement}.
      *
