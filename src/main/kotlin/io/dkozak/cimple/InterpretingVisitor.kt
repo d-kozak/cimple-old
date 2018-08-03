@@ -33,6 +33,13 @@ class InterpretingVisitor {
                         throw IllegalArgumentException("Input ${input} is not an integer")
                     }
                 }
+                is ForLoop -> {
+                    symbolTable[node.setup.variable] = evaluateExpression(node.setup.expression)
+                    while (evaluateExpression(node.testExpression) != 0) {
+                        executeStatements(node.statements)
+                        symbolTable[node.increment.variable] = evaluateExpression(node.increment.expression)
+                    }
+                }
                 else -> throw IllegalArgumentException("Unknown type of statement ${node.javaClass}")
             }
         }

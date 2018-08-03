@@ -97,4 +97,16 @@ class End2End {
         val ast = toAst(parseTree)
         interpret(ast as Program)
     }
+
+    @Test
+    fun forLoop() {
+        val input = """
+            for(i = 0; i < 10 ; i = i + 1){
+                print i;
+            }
+        """.trimIndent()
+        val parseTree = parse(input)
+        val ast = toAst(parseTree)
+        interpret(ast as Program)
+    }
 }

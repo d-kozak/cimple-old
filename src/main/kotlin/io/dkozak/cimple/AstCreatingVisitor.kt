@@ -2,13 +2,15 @@ package io.dkozak.cimple
 
 class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
 
-    val symbolTable: MutableMap<String, VariableReference> = mutableMapOf()
+    private val symbolTable: MutableMap<String, VariableReference> = mutableMapOf()
 
     override fun visitProgram(ctx: CimpleParser.ProgramContext): AstNode {
         val nodes = ctx.statement()
                 .map { it.accept(this) }
         return Program(nodes)
     }
+
+    override fun visitStatement(ctx: CimpleParser.StatementContext): AstNode = ctx.getChild(0).accept(this) // ignore SEMICOLON
 
     override fun visitVariableAssignment(ctx: CimpleParser.VariableAssignmentContext): AstNode {
         val reference = symbolTable.computeIfAbsent(ctx.ID().text) { VariableReference(ctx.ID().text) }
@@ -37,5 +39,13 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
         val thenBlock = ctx.block(0).statement().map { it.accept(this) }
         val elseBlock = ctx.block(1).statement().map { it.accept(this) }
         return IfStatement(expression, thenBlock, elseBlock)
+    }
+
+    override fun visitForLoop(ctx: CimpleParser.ForLoopContext): AstNode {
+        val setup = ctx.setup.accept(this) as VariableAssignment
+        val testExpression = ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression())
+        val increment = ctx.increment.accept(this) as VariableAssignment
+        val statements = ctx.block().statement().map { it.accept(this) }
+        return ForLoop(setup, testExpression, statements, increment)
     }
 }

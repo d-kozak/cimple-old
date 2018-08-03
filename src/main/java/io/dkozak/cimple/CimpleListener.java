@@ -116,6 +116,20 @@ public interface CimpleListener extends ParseTreeListener {
     void exitBracketExpr(CimpleParser.BracketExprContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link CimpleParser#forLoop}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterForLoop(CimpleParser.ForLoopContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#forLoop}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitForLoop(CimpleParser.ForLoopContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link CimpleParser#variableAssignment}.
      *
      * @param ctx the parse tree

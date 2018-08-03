@@ -18,15 +18,15 @@ public class CimpleParser extends Parser {
     public static final int
             EQUALS = 1, NOT_EQUALS = 2, LT = 3, LE = 4, GT = 5, GE = 6, MULT = 7, DIV = 8, PLUS = 9,
             MINUS = 10, MOD = 11, AND = 12, OR = 13, NOT = 14, ASSIGN = 15, SEMICOLON = 16, PRINT = 17,
-            INPUT = 18, IF = 19, ELSE = 20, LPAREN = 21, RPAREN = 22, LBRAC = 23, RBRAC = 24, INT = 25,
-            ID = 26, WS = 27;
+            INPUT = 18, FOR = 19, IF = 20, ELSE = 21, LPAREN = 22, RPAREN = 23, LBRAC = 24, RBRAC = 25,
+            INT = 26, ID = 27, WS = 28;
     public static final int
-            RULE_program = 0, RULE_statement = 1, RULE_expression = 2, RULE_variableAssignment = 3,
-            RULE_printStatement = 4, RULE_inputStatement = 5, RULE_ifStatement = 6,
-            RULE_block = 7;
+            RULE_program = 0, RULE_statement = 1, RULE_expression = 2, RULE_forLoop = 3,
+            RULE_variableAssignment = 4, RULE_printStatement = 5, RULE_inputStatement = 6,
+            RULE_ifStatement = 7, RULE_block = 8;
     public static final String[] ruleNames = {
-            "program", "statement", "expression", "variableAssignment", "printStatement",
-            "inputStatement", "ifStatement", "block"
+            "program", "statement", "expression", "forLoop", "variableAssignment",
+            "printStatement", "inputStatement", "ifStatement", "block"
     };
     /**
      * @deprecated Use {@link #VOCABULARY} instead.
@@ -34,41 +34,47 @@ public class CimpleParser extends Parser {
     @Deprecated
     public static final String[] tokenNames;
     public static final String _serializedATN =
-            "\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\35\u0086\4\2\t\2" +
-                    "\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\6\2\24\n" +
-                    "\2\r\2\16\2\25\3\2\3\2\3\3\3\3\3\3\3\3\5\3\36\n\3\3\4\3\4\5\4\"\n\4\3" +
-                    "\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4+\n\4\3\4\3\4\5\4/\n\4\3\4\5\4\62\n\4\3" +
-                    "\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4" +
+            "\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\36\u0096\4\2\t\2" +
+                    "\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\6" +
+                    "\2\26\n\2\r\2\16\2\27\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3" +
+                    "\3\3\5\3\'\n\3\3\4\3\4\5\4+\n\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4\64\n\4" +
+                    "\3\4\3\4\5\48\n\4\3\4\5\4;\n\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4" +
                     "\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3" +
-                    "\4\3\4\3\4\3\4\7\4[\n\4\f\4\16\4^\13\4\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6" +
-                    "\3\6\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3" +
-                    "\b\3\b\5\b{\n\b\3\t\3\t\7\t\177\n\t\f\t\16\t\u0082\13\t\3\t\3\t\3\t\2" +
-                    "\3\6\n\2\4\6\b\n\f\16\20\2\2\2\u0096\2\23\3\2\2\2\4\35\3\2\2\2\6\61\3" +
-                    "\2\2\2\b_\3\2\2\2\nd\3\2\2\2\fh\3\2\2\2\16z\3\2\2\2\20|\3\2\2\2\22\24" +
-                    "\5\4\3\2\23\22\3\2\2\2\24\25\3\2\2\2\25\23\3\2\2\2\25\26\3\2\2\2\26\27" +
-                    "\3\2\2\2\27\30\7\2\2\3\30\3\3\2\2\2\31\36\5\b\5\2\32\36\5\f\7\2\33\36" +
-                    "\5\n\6\2\34\36\5\16\b\2\35\31\3\2\2\2\35\32\3\2\2\2\35\33\3\2\2\2\35\34" +
-                    "\3\2\2\2\36\5\3\2\2\2\37!\b\4\1\2 \"\7\f\2\2! \3\2\2\2!\"\3\2\2\2\"#\3" +
-                    "\2\2\2#$\7\27\2\2$%\5\6\4\2%&\7\30\2\2&\62\3\2\2\2\'(\7\20\2\2(\62\5\6" +
-                    "\4\7)+\7\f\2\2*)\3\2\2\2*+\3\2\2\2+,\3\2\2\2,\62\7\33\2\2-/\7\f\2\2.-" +
-                    "\3\2\2\2./\3\2\2\2/\60\3\2\2\2\60\62\7\34\2\2\61\37\3\2\2\2\61\'\3\2\2" +
-                    "\2\61*\3\2\2\2\61.\3\2\2\2\62\\\3\2\2\2\63\64\f\22\2\2\64\65\7\t\2\2\65" +
-                    "[\5\6\4\23\66\67\f\21\2\2\678\7\n\2\28[\5\6\4\229:\f\20\2\2:;\7\r\2\2" +
-                    ";[\5\6\4\21<=\f\17\2\2=>\7\13\2\2>[\5\6\4\20?@\f\16\2\2@A\7\f\2\2A[\5" +
-                    "\6\4\17BC\f\r\2\2CD\7\3\2\2D[\5\6\4\16EF\f\f\2\2FG\7\4\2\2G[\5\6\4\rH" +
-                    "I\f\13\2\2IJ\7\5\2\2J[\5\6\4\fKL\f\n\2\2LM\7\6\2\2M[\5\6\4\13NO\f\t\2" +
-                    "\2OP\7\7\2\2P[\5\6\4\nQR\f\b\2\2RS\7\b\2\2S[\5\6\4\tTU\f\6\2\2UV\7\16" +
-                    "\2\2V[\5\6\4\7WX\f\5\2\2XY\7\17\2\2Y[\5\6\4\6Z\63\3\2\2\2Z\66\3\2\2\2" +
-                    "Z9\3\2\2\2Z<\3\2\2\2Z?\3\2\2\2ZB\3\2\2\2ZE\3\2\2\2ZH\3\2\2\2ZK\3\2\2\2" +
-                    "ZN\3\2\2\2ZQ\3\2\2\2ZT\3\2\2\2ZW\3\2\2\2[^\3\2\2\2\\Z\3\2\2\2\\]\3\2\2" +
-                    "\2]\7\3\2\2\2^\\\3\2\2\2_`\7\34\2\2`a\7\21\2\2ab\5\6\4\2bc\7\22\2\2c\t" +
-                    "\3\2\2\2de\7\23\2\2ef\5\6\4\2fg\7\22\2\2g\13\3\2\2\2hi\7\24\2\2ij\7\34" +
-                    "\2\2jk\7\22\2\2k\r\3\2\2\2lm\7\25\2\2mn\7\27\2\2no\5\6\4\2op\7\30\2\2" +
-                    "pq\5\20\t\2q{\3\2\2\2rs\7\25\2\2st\7\27\2\2tu\5\6\4\2uv\7\30\2\2vw\5\20" +
-                    "\t\2wx\7\26\2\2xy\5\20\t\2y{\3\2\2\2zl\3\2\2\2zr\3\2\2\2{\17\3\2\2\2|" +
-                    "\u0080\7\31\2\2}\177\5\4\3\2~}\3\2\2\2\177\u0082\3\2\2\2\u0080~\3\2\2" +
-                    "\2\u0080\u0081\3\2\2\2\u0081\u0083\3\2\2\2\u0082\u0080\3\2\2\2\u0083\u0084" +
-                    "\7\32\2\2\u0084\21\3\2\2\2\f\25\35!*.\61Z\\z\u0080";
+                    "\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4d\n\4\f\4\16\4g\13\4" +
+                    "\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3" +
+                    "\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t" +
+                    "\u008b\n\t\3\n\3\n\7\n\u008f\n\n\f\n\16\n\u0092\13\n\3\n\3\n\3\n\2\3\6" +
+                    "\13\2\4\6\b\n\f\16\20\22\2\2\2\u00a6\2\25\3\2\2\2\4&\3\2\2\2\6:\3\2\2" +
+                    "\2\bh\3\2\2\2\nr\3\2\2\2\fv\3\2\2\2\16y\3\2\2\2\20\u008a\3\2\2\2\22\u008c" +
+                    "\3\2\2\2\24\26\5\4\3\2\25\24\3\2\2\2\26\27\3\2\2\2\27\25\3\2\2\2\27\30" +
+                    "\3\2\2\2\30\31\3\2\2\2\31\32\7\2\2\3\32\3\3\2\2\2\33\34\5\n\6\2\34\35" +
+                    "\7\22\2\2\35\'\3\2\2\2\36\37\5\16\b\2\37 \7\22\2\2 \'\3\2\2\2!\"\5\f\7" +
+                    "\2\"#\7\22\2\2#\'\3\2\2\2$\'\5\20\t\2%\'\5\b\5\2&\33\3\2\2\2&\36\3\2\2" +
+                    "\2&!\3\2\2\2&$\3\2\2\2&%\3\2\2\2\'\5\3\2\2\2(*\b\4\1\2)+\7\f\2\2*)\3\2" +
+                    "\2\2*+\3\2\2\2+,\3\2\2\2,-\7\30\2\2-.\5\6\4\2./\7\31\2\2/;\3\2\2\2\60" +
+                    "\61\7\20\2\2\61;\5\6\4\7\62\64\7\f\2\2\63\62\3\2\2\2\63\64\3\2\2\2\64" +
+                    "\65\3\2\2\2\65;\7\34\2\2\668\7\f\2\2\67\66\3\2\2\2\678\3\2\2\289\3\2\2" +
+                    "\29;\7\35\2\2:(\3\2\2\2:\60\3\2\2\2:\63\3\2\2\2:\67\3\2\2\2;e\3\2\2\2" +
+                    "<=\f\22\2\2=>\7\t\2\2>d\5\6\4\23?@\f\21\2\2@A\7\n\2\2Ad\5\6\4\22BC\f\20" +
+                    "\2\2CD\7\r\2\2Dd\5\6\4\21EF\f\17\2\2FG\7\13\2\2Gd\5\6\4\20HI\f\16\2\2" +
+                    "IJ\7\f\2\2Jd\5\6\4\17KL\f\r\2\2LM\7\3\2\2Md\5\6\4\16NO\f\f\2\2OP\7\4\2" +
+                    "\2Pd\5\6\4\rQR\f\13\2\2RS\7\5\2\2Sd\5\6\4\fTU\f\n\2\2UV\7\6\2\2Vd\5\6" +
+                    "\4\13WX\f\t\2\2XY\7\7\2\2Yd\5\6\4\nZ[\f\b\2\2[\\\7\b\2\2\\d\5\6\4\t]^" +
+                    "\f\6\2\2^_\7\16\2\2_d\5\6\4\7`a\f\5\2\2ab\7\17\2\2bd\5\6\4\6c<\3\2\2\2" +
+                    "c?\3\2\2\2cB\3\2\2\2cE\3\2\2\2cH\3\2\2\2cK\3\2\2\2cN\3\2\2\2cQ\3\2\2\2" +
+                    "cT\3\2\2\2cW\3\2\2\2cZ\3\2\2\2c]\3\2\2\2c`\3\2\2\2dg\3\2\2\2ec\3\2\2\2" +
+                    "ef\3\2\2\2f\7\3\2\2\2ge\3\2\2\2hi\7\25\2\2ij\7\30\2\2jk\5\n\6\2kl\7\22" +
+                    "\2\2lm\5\6\4\2mn\7\22\2\2no\5\n\6\2op\7\31\2\2pq\5\22\n\2q\t\3\2\2\2r" +
+                    "s\7\35\2\2st\7\21\2\2tu\5\6\4\2u\13\3\2\2\2vw\7\23\2\2wx\5\6\4\2x\r\3" +
+                    "\2\2\2yz\7\24\2\2z{\7\35\2\2{\17\3\2\2\2|}\7\26\2\2}~\7\30\2\2~\177\5" +
+                    "\6\4\2\177\u0080\7\31\2\2\u0080\u0081\5\22\n\2\u0081\u008b\3\2\2\2\u0082" +
+                    "\u0083\7\26\2\2\u0083\u0084\7\30\2\2\u0084\u0085\5\6\4\2\u0085\u0086\7" +
+                    "\31\2\2\u0086\u0087\5\22\n\2\u0087\u0088\7\27\2\2\u0088\u0089\5\22\n\2" +
+                    "\u0089\u008b\3\2\2\2\u008a|\3\2\2\2\u008a\u0082\3\2\2\2\u008b\21\3\2\2" +
+                    "\2\u008c\u0090\7\32\2\2\u008d\u008f\5\4\3\2\u008e\u008d\3\2\2\2\u008f" +
+                    "\u0092\3\2\2\2\u0090\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u0093\3\2" +
+                    "\2\2\u0092\u0090\3\2\2\2\u0093\u0094\7\33\2\2\u0094\23\3\2\2\2\f\27&*" +
+                    "\63\67:ce\u008a\u0090";
     public static final ATN _ATN =
             new ATNDeserializer().deserialize(_serializedATN.toCharArray());
     protected static final DFA[] _decisionToDFA;
@@ -77,12 +83,13 @@ public class CimpleParser extends Parser {
     private static final String[] _LITERAL_NAMES = {
             null, "'=='", "'!='", "'<'", "'<='", "'>'", "'>='", "'*'", "'/'", "'+'",
             "'-'", "'%'", "'and'", "'or'", "'not'", "'='", "';'", "'print'", "'input'",
-            "'if'", "'else'", "'('", "')'", "'{'", "'}'"
+            "'for'", "'if'", "'else'", "'('", "')'", "'{'", "'}'"
     };
     private static final String[] _SYMBOLIC_NAMES = {
             null, "EQUALS", "NOT_EQUALS", "LT", "LE", "GT", "GE", "MULT", "DIV", "PLUS",
             "MINUS", "MOD", "AND", "OR", "NOT", "ASSIGN", "SEMICOLON", "PRINT", "INPUT",
-            "IF", "ELSE", "LPAREN", "RPAREN", "LBRAC", "RBRAC", "INT", "ID", "WS"
+            "FOR", "IF", "ELSE", "LPAREN", "RPAREN", "LBRAC", "RBRAC", "INT", "ID",
+            "WS"
     };
     public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -155,22 +162,22 @@ public class CimpleParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(17);
+                setState(19);
                 _errHandler.sync(this);
                 _la = _input.LA(1);
                 do {
                     {
                         {
-                            setState(16);
+                            setState(18);
                             statement();
                         }
                     }
-                    setState(19);
+                    setState(21);
                     _errHandler.sync(this);
                     _la = _input.LA(1);
                 }
-                while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << INPUT) | (1L << IF) | (1L << ID))) != 0));
-                setState(21);
+                while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << INPUT) | (1L << FOR) | (1L << IF) | (1L << ID))) != 0));
+                setState(23);
                 match(EOF);
             }
         } catch (RecognitionException re) {
@@ -187,35 +194,48 @@ public class CimpleParser extends Parser {
         StatementContext _localctx = new StatementContext(_ctx, getState());
         enterRule(_localctx, 2, RULE_statement);
         try {
-            setState(27);
+            setState(36);
             _errHandler.sync(this);
             switch (_input.LA(1)) {
                 case ID:
                     enterOuterAlt(_localctx, 1);
                 {
-                    setState(23);
+                    setState(25);
                     variableAssignment();
+                    setState(26);
+                    match(SEMICOLON);
                 }
                 break;
                 case INPUT:
                     enterOuterAlt(_localctx, 2);
                 {
-                    setState(24);
+                    setState(28);
                     inputStatement();
+                    setState(29);
+                    match(SEMICOLON);
                 }
                 break;
                 case PRINT:
                     enterOuterAlt(_localctx, 3);
                 {
-                    setState(25);
+                    setState(31);
                     printStatement();
+                    setState(32);
+                    match(SEMICOLON);
                 }
                 break;
                 case IF:
                     enterOuterAlt(_localctx, 4);
                 {
-                    setState(26);
+                    setState(34);
                     ifStatement();
+                }
+                break;
+                case FOR:
+                    enterOuterAlt(_localctx, 5);
+                {
+                    setState(35);
+                    forLoop();
                 }
                 break;
                 default:
@@ -247,7 +267,7 @@ public class CimpleParser extends Parser {
             int _alt;
             enterOuterAlt(_localctx, 1);
             {
-                setState(47);
+                setState(56);
                 _errHandler.sync(this);
                 switch (getInterpreter().adaptivePredict(_input, 5, _ctx)) {
                     case 1: {
@@ -255,38 +275,6 @@ public class CimpleParser extends Parser {
                         _ctx = _localctx;
                         _prevctx = _localctx;
 
-                        setState(31);
-                        _errHandler.sync(this);
-                        _la = _input.LA(1);
-                        if (_la == MINUS) {
-                            {
-                                setState(30);
-                                match(MINUS);
-                            }
-                        }
-
-                        setState(33);
-                        match(LPAREN);
-                        setState(34);
-                        expression(0);
-                        setState(35);
-                        match(RPAREN);
-                    }
-                    break;
-                    case 2: {
-                        _localctx = new NotExprContext(_localctx);
-                        _ctx = _localctx;
-                        _prevctx = _localctx;
-                        setState(37);
-                        match(NOT);
-                        setState(38);
-                        expression(5);
-                    }
-                    break;
-                    case 3: {
-                        _localctx = new IntConstantContext(_localctx);
-                        _ctx = _localctx;
-                        _prevctx = _localctx;
                         setState(40);
                         _errHandler.sync(this);
                         _la = _input.LA(1);
@@ -298,6 +286,38 @@ public class CimpleParser extends Parser {
                         }
 
                         setState(42);
+                        match(LPAREN);
+                        setState(43);
+                        expression(0);
+                        setState(44);
+                        match(RPAREN);
+                    }
+                    break;
+                    case 2: {
+                        _localctx = new NotExprContext(_localctx);
+                        _ctx = _localctx;
+                        _prevctx = _localctx;
+                        setState(46);
+                        match(NOT);
+                        setState(47);
+                        expression(5);
+                    }
+                    break;
+                    case 3: {
+                        _localctx = new IntConstantContext(_localctx);
+                        _ctx = _localctx;
+                        _prevctx = _localctx;
+                        setState(49);
+                        _errHandler.sync(this);
+                        _la = _input.LA(1);
+                        if (_la == MINUS) {
+                            {
+                                setState(48);
+                                match(MINUS);
+                            }
+                        }
+
+                        setState(51);
                         match(INT);
                     }
                     break;
@@ -305,23 +325,23 @@ public class CimpleParser extends Parser {
                         _localctx = new VarExprContext(_localctx);
                         _ctx = _localctx;
                         _prevctx = _localctx;
-                        setState(44);
+                        setState(53);
                         _errHandler.sync(this);
                         _la = _input.LA(1);
                         if (_la == MINUS) {
                             {
-                                setState(43);
+                                setState(52);
                                 match(MINUS);
                             }
                         }
 
-                        setState(46);
+                        setState(55);
                         match(ID);
                     }
                     break;
                 }
                 _ctx.stop = _input.LT(-1);
-                setState(90);
+                setState(99);
                 _errHandler.sync(this);
                 _alt = getInterpreter().adaptivePredict(_input, 7, _ctx);
                 while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
@@ -329,169 +349,169 @@ public class CimpleParser extends Parser {
                         if (_parseListeners != null) triggerExitRuleEvent();
                         _prevctx = _localctx;
                         {
-                            setState(88);
+                            setState(97);
                             _errHandler.sync(this);
                             switch (getInterpreter().adaptivePredict(_input, 6, _ctx)) {
                                 case 1: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(49);
+                                    setState(58);
                                     if (!(precpred(_ctx, 16)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 16)");
-                                    setState(50);
+                                    setState(59);
                                     match(MULT);
-                                    setState(51);
+                                    setState(60);
                                     expression(17);
                                 }
                                 break;
                                 case 2: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(52);
+                                    setState(61);
                                     if (!(precpred(_ctx, 15)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 15)");
-                                    setState(53);
+                                    setState(62);
                                     match(DIV);
-                                    setState(54);
+                                    setState(63);
                                     expression(16);
                                 }
                                 break;
                                 case 3: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(55);
+                                    setState(64);
                                     if (!(precpred(_ctx, 14)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 14)");
-                                    setState(56);
+                                    setState(65);
                                     match(MOD);
-                                    setState(57);
+                                    setState(66);
                                     expression(15);
                                 }
                                 break;
                                 case 4: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(58);
+                                    setState(67);
                                     if (!(precpred(_ctx, 13)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 13)");
-                                    setState(59);
+                                    setState(68);
                                     match(PLUS);
-                                    setState(60);
+                                    setState(69);
                                     expression(14);
                                 }
                                 break;
                                 case 5: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(61);
+                                    setState(70);
                                     if (!(precpred(_ctx, 12)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 12)");
-                                    setState(62);
+                                    setState(71);
                                     match(MINUS);
-                                    setState(63);
+                                    setState(72);
                                     expression(13);
                                 }
                                 break;
                                 case 6: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(64);
+                                    setState(73);
                                     if (!(precpred(_ctx, 11)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 11)");
-                                    setState(65);
+                                    setState(74);
                                     match(EQUALS);
-                                    setState(66);
+                                    setState(75);
                                     expression(12);
                                 }
                                 break;
                                 case 7: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(67);
+                                    setState(76);
                                     if (!(precpred(_ctx, 10)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 10)");
-                                    setState(68);
+                                    setState(77);
                                     match(NOT_EQUALS);
-                                    setState(69);
+                                    setState(78);
                                     expression(11);
                                 }
                                 break;
                                 case 8: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(70);
+                                    setState(79);
                                     if (!(precpred(_ctx, 9)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-                                    setState(71);
+                                    setState(80);
                                     match(LT);
-                                    setState(72);
+                                    setState(81);
                                     expression(10);
                                 }
                                 break;
                                 case 9: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(73);
+                                    setState(82);
                                     if (!(precpred(_ctx, 8)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 8)");
-                                    setState(74);
+                                    setState(83);
                                     match(LE);
-                                    setState(75);
+                                    setState(84);
                                     expression(9);
                                 }
                                 break;
                                 case 10: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(76);
+                                    setState(85);
                                     if (!(precpred(_ctx, 7)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-                                    setState(77);
+                                    setState(86);
                                     match(GT);
-                                    setState(78);
+                                    setState(87);
                                     expression(8);
                                 }
                                 break;
                                 case 11: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(79);
+                                    setState(88);
                                     if (!(precpred(_ctx, 6)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-                                    setState(80);
+                                    setState(89);
                                     match(GE);
-                                    setState(81);
+                                    setState(90);
                                     expression(7);
                                 }
                                 break;
                                 case 12: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(82);
+                                    setState(91);
                                     if (!(precpred(_ctx, 4)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-                                    setState(83);
+                                    setState(92);
                                     match(AND);
-                                    setState(84);
+                                    setState(93);
                                     expression(5);
                                 }
                                 break;
                                 case 13: {
                                     _localctx = new BinExprContext(new ExpressionContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                                    setState(85);
+                                    setState(94);
                                     if (!(precpred(_ctx, 3)))
                                         throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-                                    setState(86);
+                                    setState(95);
                                     match(OR);
-                                    setState(87);
+                                    setState(96);
                                     expression(4);
                                 }
                                 break;
                             }
                         }
                     }
-                    setState(92);
+                    setState(101);
                     _errHandler.sync(this);
                     _alt = getInterpreter().adaptivePredict(_input, 7, _ctx);
                 }
@@ -506,20 +526,53 @@ public class CimpleParser extends Parser {
         return _localctx;
     }
 
-    public final VariableAssignmentContext variableAssignment() throws RecognitionException {
-        VariableAssignmentContext _localctx = new VariableAssignmentContext(_ctx, getState());
-        enterRule(_localctx, 6, RULE_variableAssignment);
+    public final ForLoopContext forLoop() throws RecognitionException {
+        ForLoopContext _localctx = new ForLoopContext(_ctx, getState());
+        enterRule(_localctx, 6, RULE_forLoop);
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(93);
-                match(ID);
-                setState(94);
-                match(ASSIGN);
-                setState(95);
-                expression(0);
-                setState(96);
+                setState(102);
+                match(FOR);
+                setState(103);
+                match(LPAREN);
+                setState(104);
+                ((ForLoopContext) _localctx).setup = variableAssignment();
+                setState(105);
                 match(SEMICOLON);
+                setState(106);
+                expression(0);
+                setState(107);
+                match(SEMICOLON);
+                setState(108);
+                ((ForLoopContext) _localctx).increment = variableAssignment();
+                setState(109);
+                match(RPAREN);
+                setState(110);
+                block();
+            }
+        } catch (RecognitionException re) {
+            _localctx.exception = re;
+            _errHandler.reportError(this, re);
+            _errHandler.recover(this, re);
+        } finally {
+            exitRule();
+        }
+        return _localctx;
+    }
+
+    public final VariableAssignmentContext variableAssignment() throws RecognitionException {
+        VariableAssignmentContext _localctx = new VariableAssignmentContext(_ctx, getState());
+        enterRule(_localctx, 8, RULE_variableAssignment);
+        try {
+            enterOuterAlt(_localctx, 1);
+            {
+                setState(112);
+                match(ID);
+                setState(113);
+                match(ASSIGN);
+                setState(114);
+                expression(0);
             }
         } catch (RecognitionException re) {
             _localctx.exception = re;
@@ -533,16 +586,14 @@ public class CimpleParser extends Parser {
 
     public final PrintStatementContext printStatement() throws RecognitionException {
         PrintStatementContext _localctx = new PrintStatementContext(_ctx, getState());
-        enterRule(_localctx, 8, RULE_printStatement);
+        enterRule(_localctx, 10, RULE_printStatement);
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(98);
+                setState(116);
                 match(PRINT);
-                setState(99);
+                setState(117);
                 expression(0);
-                setState(100);
-                match(SEMICOLON);
             }
         } catch (RecognitionException re) {
             _localctx.exception = re;
@@ -556,16 +607,14 @@ public class CimpleParser extends Parser {
 
     public final InputStatementContext inputStatement() throws RecognitionException {
         InputStatementContext _localctx = new InputStatementContext(_ctx, getState());
-        enterRule(_localctx, 10, RULE_inputStatement);
+        enterRule(_localctx, 12, RULE_inputStatement);
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(102);
+                setState(119);
                 match(INPUT);
-                setState(103);
+                setState(120);
                 match(ID);
-                setState(104);
-                match(SEMICOLON);
             }
         } catch (RecognitionException re) {
             _localctx.exception = re;
@@ -579,24 +628,24 @@ public class CimpleParser extends Parser {
 
     public final IfStatementContext ifStatement() throws RecognitionException {
         IfStatementContext _localctx = new IfStatementContext(_ctx, getState());
-        enterRule(_localctx, 12, RULE_ifStatement);
+        enterRule(_localctx, 14, RULE_ifStatement);
         try {
-            setState(120);
+            setState(136);
             _errHandler.sync(this);
             switch (getInterpreter().adaptivePredict(_input, 8, _ctx)) {
                 case 1:
                     _localctx = new IfContext(_localctx);
                     enterOuterAlt(_localctx, 1);
                 {
-                    setState(106);
+                    setState(122);
                     match(IF);
-                    setState(107);
+                    setState(123);
                     match(LPAREN);
-                    setState(108);
+                    setState(124);
                     expression(0);
-                    setState(109);
+                    setState(125);
                     match(RPAREN);
-                    setState(110);
+                    setState(126);
                     block();
                 }
                 break;
@@ -604,19 +653,19 @@ public class CimpleParser extends Parser {
                     _localctx = new IfElseContext(_localctx);
                     enterOuterAlt(_localctx, 2);
                 {
-                    setState(112);
+                    setState(128);
                     match(IF);
-                    setState(113);
+                    setState(129);
                     match(LPAREN);
-                    setState(114);
+                    setState(130);
                     expression(0);
-                    setState(115);
+                    setState(131);
                     match(RPAREN);
-                    setState(116);
+                    setState(132);
                     block();
-                    setState(117);
+                    setState(133);
                     match(ELSE);
-                    setState(118);
+                    setState(134);
                     block();
                 }
                 break;
@@ -633,28 +682,28 @@ public class CimpleParser extends Parser {
 
     public final BlockContext block() throws RecognitionException {
         BlockContext _localctx = new BlockContext(_ctx, getState());
-        enterRule(_localctx, 14, RULE_block);
+        enterRule(_localctx, 16, RULE_block);
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(122);
+                setState(138);
                 match(LBRAC);
-                setState(126);
+                setState(142);
                 _errHandler.sync(this);
                 _la = _input.LA(1);
-                while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << INPUT) | (1L << IF) | (1L << ID))) != 0)) {
+                while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << INPUT) | (1L << FOR) | (1L << IF) | (1L << ID))) != 0)) {
                     {
                         {
-                            setState(123);
+                            setState(139);
                             statement();
                         }
                     }
-                    setState(128);
+                    setState(144);
                     _errHandler.sync(this);
                     _la = _input.LA(1);
                 }
-                setState(129);
+                setState(145);
                 match(RBRAC);
             }
         } catch (RecognitionException re) {
@@ -755,6 +804,10 @@ public class CimpleParser extends Parser {
             return getRuleContext(VariableAssignmentContext.class, 0);
         }
 
+        public TerminalNode SEMICOLON() {
+            return getToken(CimpleParser.SEMICOLON, 0);
+        }
+
         public InputStatementContext inputStatement() {
             return getRuleContext(InputStatementContext.class, 0);
         }
@@ -765,6 +818,10 @@ public class CimpleParser extends Parser {
 
         public IfStatementContext ifStatement() {
             return getRuleContext(IfStatementContext.class, 0);
+        }
+
+        public ForLoopContext forLoop() {
+            return getRuleContext(ForLoopContext.class, 0);
         }
 
         @Override
@@ -1017,6 +1074,72 @@ public class CimpleParser extends Parser {
         }
     }
 
+    public static class ForLoopContext extends ParserRuleContext {
+        public VariableAssignmentContext setup;
+        public VariableAssignmentContext increment;
+
+        public ForLoopContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        public TerminalNode FOR() {
+            return getToken(CimpleParser.FOR, 0);
+        }
+
+        public TerminalNode LPAREN() {
+            return getToken(CimpleParser.LPAREN, 0);
+        }
+
+        public List<TerminalNode> SEMICOLON() {
+            return getTokens(CimpleParser.SEMICOLON);
+        }
+
+        public TerminalNode SEMICOLON(int i) {
+            return getToken(CimpleParser.SEMICOLON, i);
+        }
+
+        public ExpressionContext expression() {
+            return getRuleContext(ExpressionContext.class, 0);
+        }
+
+        public TerminalNode RPAREN() {
+            return getToken(CimpleParser.RPAREN, 0);
+        }
+
+        public BlockContext block() {
+            return getRuleContext(BlockContext.class, 0);
+        }
+
+        public List<VariableAssignmentContext> variableAssignment() {
+            return getRuleContexts(VariableAssignmentContext.class);
+        }
+
+        public VariableAssignmentContext variableAssignment(int i) {
+            return getRuleContext(VariableAssignmentContext.class, i);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_forLoop;
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).enterForLoop(this);
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+            if (listener instanceof CimpleListener) ((CimpleListener) listener).exitForLoop(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof CimpleVisitor) return ((CimpleVisitor<? extends T>) visitor).visitForLoop(this);
+            else return visitor.visitChildren(this);
+        }
+    }
+
     public static class VariableAssignmentContext extends ParserRuleContext {
         public VariableAssignmentContext(ParserRuleContext parent, int invokingState) {
             super(parent, invokingState);
@@ -1032,10 +1155,6 @@ public class CimpleParser extends Parser {
 
         public ExpressionContext expression() {
             return getRuleContext(ExpressionContext.class, 0);
-        }
-
-        public TerminalNode SEMICOLON() {
-            return getToken(CimpleParser.SEMICOLON, 0);
         }
 
         @Override
@@ -1074,10 +1193,6 @@ public class CimpleParser extends Parser {
             return getRuleContext(ExpressionContext.class, 0);
         }
 
-        public TerminalNode SEMICOLON() {
-            return getToken(CimpleParser.SEMICOLON, 0);
-        }
-
         @Override
         public int getRuleIndex() {
             return RULE_printStatement;
@@ -1112,10 +1227,6 @@ public class CimpleParser extends Parser {
 
         public TerminalNode ID() {
             return getToken(CimpleParser.ID, 0);
-        }
-
-        public TerminalNode SEMICOLON() {
-            return getToken(CimpleParser.SEMICOLON, 0);
         }
 
         @Override

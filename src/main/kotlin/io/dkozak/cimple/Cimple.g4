@@ -5,10 +5,11 @@ program
     ;
 
 statement
-    : variableAssignment
-    | inputStatement
-    | printStatement
+    : variableAssignment SEMICOLON
+    | inputStatement SEMICOLON
+    | printStatement SEMICOLON
     | ifStatement
+    | forLoop
     ;
 
 
@@ -33,16 +34,20 @@ expression
     ;
 
 
+forLoop
+    : FOR LPAREN setup=variableAssignment SEMICOLON expression SEMICOLON increment=variableAssignment RPAREN block
+    ;
+
 variableAssignment
-    : ID ASSIGN expression SEMICOLON
+    : ID ASSIGN expression
     ;
 
 printStatement
-    : PRINT expression SEMICOLON
+    : PRINT expression
     ;
 
 inputStatement
-    : INPUT ID SEMICOLON
+    : INPUT ID
     ;
 
 ifStatement
@@ -75,6 +80,7 @@ SEMICOLON : ';';
 PRINT : 'print';
 INPUT : 'input';
 
+FOR : 'for';
 IF : 'if';
 ELSE : 'else';
 

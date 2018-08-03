@@ -72,6 +72,12 @@ data class IfStatement(
 ) : AstNode
 
 
+data class ForLoop(
+        val setup: VariableAssignment,
+        val testExpression: Expression,
+        val statements: List<AstNode>,
+        val increment: VariableAssignment
+) : AstNode
 
 
 

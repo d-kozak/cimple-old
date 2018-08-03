@@ -72,6 +72,14 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     T visitBracketExpr(CimpleParser.BracketExprContext ctx);
 
     /**
+     * Visit a parse tree produced by {@link CimpleParser#forLoop}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitForLoop(CimpleParser.ForLoopContext ctx);
+
+    /**
      * Visit a parse tree produced by {@link CimpleParser#variableAssignment}.
      *
      * @param ctx the parse tree

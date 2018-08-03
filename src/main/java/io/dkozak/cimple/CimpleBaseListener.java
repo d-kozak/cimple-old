@@ -143,6 +143,24 @@ public class CimpleBaseListener implements CimpleListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterForLoop(CimpleParser.ForLoopContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitForLoop(CimpleParser.ForLoopContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterVariableAssignment(CimpleParser.VariableAssignmentContext ctx) {
     }
 
