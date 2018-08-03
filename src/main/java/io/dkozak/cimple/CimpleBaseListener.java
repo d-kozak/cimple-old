@@ -89,6 +89,24 @@ public class CimpleBaseListener implements CimpleListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterNotExpr(CimpleParser.NotExprContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitNotExpr(CimpleParser.NotExprContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterIntConstant(CimpleParser.IntConstantContext ctx) {
     }
 
@@ -117,24 +135,6 @@ public class CimpleBaseListener implements CimpleListener {
      */
     @Override
     public void exitBracketExpr(CimpleParser.BracketExprContext ctx) {
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void enterLogExpr(CimpleParser.LogExprContext ctx) {
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void exitLogExpr(CimpleParser.LogExprContext ctx) {
     }
 
     /**

@@ -1,6 +1,5 @@
 // Generated from /home/dkozak/projects/cimple/src/main/kotlin/io/dkozak/cimple/Cimple.g4 by ANTLR 4.7
 package io.dkozak.cimple;
-
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -9,7 +8,7 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
  * of the available methods.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
- *            operations with no return type.
+ * operations with no return type.
  */
 public class CimpleBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements CimpleVisitor<T> {
     /**
@@ -63,6 +62,17 @@ public class CimpleBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
      * {@link #visitChildren} on {@code ctx}.</p>
      */
     @Override
+    public T visitNotExpr(CimpleParser.NotExprContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
+    @Override
     public T visitIntConstant(CimpleParser.IntConstantContext ctx) {
         return visitChildren(ctx);
     }
@@ -75,17 +85,6 @@ public class CimpleBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
      */
     @Override
     public T visitBracketExpr(CimpleParser.BracketExprContext ctx) {
-        return visitChildren(ctx);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation returns the result of calling
-     * {@link #visitChildren} on {@code ctx}.</p>
-     */
-    @Override
-    public T visitLogExpr(CimpleParser.LogExprContext ctx) {
         return visitChildren(ctx);
     }
 

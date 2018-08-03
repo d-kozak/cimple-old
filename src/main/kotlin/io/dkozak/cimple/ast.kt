@@ -19,10 +19,32 @@ data class IntegerLiteral(
 ) : Expression()
 
 data class BinaryExpression(
-        val operation: String,
+        val operation: Operation,
         val left: Expression,
         val right: Expression
 ) : Expression()
+
+data class UnaryExpression(
+        val operation: Operation,
+        val expression: Expression
+) : Expression()
+
+enum class Operation {
+    AND,
+    OR,
+    NOT,
+    EQUALS,
+    NOT_EQUALS,
+    LT,
+    LE,
+    GT,
+    GE,
+    MULT,
+    DIV,
+    PLUS,
+    MINUS,
+    MOD
+}
 
 data class UnresolvedBinaryExpression(
         val operation: String,

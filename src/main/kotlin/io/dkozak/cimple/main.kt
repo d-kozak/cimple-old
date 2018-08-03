@@ -8,6 +8,7 @@ import java.io.File
 fun main(args: Array<String>) {
     if (args.size != 1) {
         System.err.println("Expected one argument, file to interpret")
+        System.exit(1)
     }
     val input = File(args[0]).readText()
     val parseTree = parse(input)

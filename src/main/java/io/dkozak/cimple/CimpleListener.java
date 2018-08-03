@@ -68,6 +68,22 @@ public interface CimpleListener extends ParseTreeListener {
     void exitBinExpr(CimpleParser.BinExprContext ctx);
 
     /**
+     * Enter a parse tree produced by the {@code notExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterNotExpr(CimpleParser.NotExprContext ctx);
+
+    /**
+     * Exit a parse tree produced by the {@code notExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitNotExpr(CimpleParser.NotExprContext ctx);
+
+    /**
      * Enter a parse tree produced by the {@code intConstant}
      * labeled alternative in {@link CimpleParser#expression}.
      *
@@ -98,22 +114,6 @@ public interface CimpleListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     void exitBracketExpr(CimpleParser.BracketExprContext ctx);
-
-    /**
-     * Enter a parse tree produced by the {@code logExpr}
-     * labeled alternative in {@link CimpleParser#expression}.
-     *
-     * @param ctx the parse tree
-     */
-    void enterLogExpr(CimpleParser.LogExprContext ctx);
-
-    /**
-     * Exit a parse tree produced by the {@code logExpr}
-     * labeled alternative in {@link CimpleParser#expression}.
-     *
-     * @param ctx the parse tree
-     */
-    void exitLogExpr(CimpleParser.LogExprContext ctx);
 
     /**
      * Enter a parse tree produced by {@link CimpleParser#variableAssignment}.

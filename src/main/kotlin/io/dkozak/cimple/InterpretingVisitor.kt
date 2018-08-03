@@ -33,18 +33,21 @@ class InterpretingVisitor {
     }
 
     fun evaluateBinaryExpression(expression: BinaryExpression): Int = when (expression.operation) {
-        "+" -> evaluateExpression(expression.left) + evaluateExpression(expression.right)
-        "-" -> evaluateExpression(expression.left) - evaluateExpression(expression.right)
-        "*" -> evaluateExpression(expression.left) * evaluateExpression(expression.right)
-        "/" -> evaluateExpression(expression.left) / evaluateExpression(expression.right)
+        Operation.PLUS -> evaluateExpression(expression.left) + evaluateExpression(expression.right)
+        Operation.MINUS -> evaluateExpression(expression.left) - evaluateExpression(expression.right)
+        Operation.MULT -> evaluateExpression(expression.left) * evaluateExpression(expression.right)
+        Operation.DIV -> evaluateExpression(expression.left) / evaluateExpression(expression.right)
+        Operation.MOD -> evaluateExpression(expression.left) % evaluateExpression(expression.right)
 
-        "==" -> if (evaluateExpression(expression.left) == evaluateExpression(expression.right)) 1 else 0
-        "!=" -> if (evaluateExpression(expression.left) != evaluateExpression(expression.right)) 1 else 0
-        "<" -> if (evaluateExpression(expression.left) < evaluateExpression(expression.right)) 1 else 0
-        "<=" -> if (evaluateExpression(expression.left) <= evaluateExpression(expression.right)) 1 else 0
-        ">" -> if (evaluateExpression(expression.left) > evaluateExpression(expression.right)) 1 else 0
-        ">=" -> if (evaluateExpression(expression.left) >= evaluateExpression(expression.right)) 1 else 0
+        Operation.EQUALS -> if (evaluateExpression(expression.left) == evaluateExpression(expression.right)) 1 else 0
+        Operation.NOT_EQUALS -> if (evaluateExpression(expression.left) != evaluateExpression(expression.right)) 1 else 0
+        Operation.LT -> if (evaluateExpression(expression.left) < evaluateExpression(expression.right)) 1 else 0
+        Operation.LE -> if (evaluateExpression(expression.left) <= evaluateExpression(expression.right)) 1 else 0
+        Operation.GT -> if (evaluateExpression(expression.left) > evaluateExpression(expression.right)) 1 else 0
+        Operation.GE -> if (evaluateExpression(expression.left) >= evaluateExpression(expression.right)) 1 else 0
 
-        else -> throw UnsupportedOperationException("Unknown type of operation: ${expression.operation}")
+        Operation.AND -> if (evaluateExpression(expression.left) != 0 && evaluateExpression(expression.right) != 0) 1 else 0
+        Operation.OR -> if (evaluateExpression(expression.left) != 0 || evaluateExpression(expression.right) != 0) 1 else 0
+        Operation.NOT -> throw IllegalArgumentException("Not is only unary")
     }
 }

@@ -12,20 +12,23 @@ statement
 
 
 expression
-    : LPAREN expr=expression RPAREN #bracketExpr
+    : MINUS? LPAREN expression RPAREN #bracketExpr
     | expression MULT expression #binExpr
     | expression DIV expression #binExpr
     | expression MOD expression #binExpr
     | expression PLUS expression #binExpr
     | expression MINUS expression #binExpr
-    | expression EQUALS expression #logExpr
-    | expression NOT_EQUALS expression #logExpr
-    | expression LT expression #logExpr
-    | expression LE expression #logExpr
-    | expression GT expression #logExpr
-    | expression GE expression #logExpr
-    | INT #intConstant
-    | ID #varExpr
+    | expression EQUALS expression #binExpr
+    | expression NOT_EQUALS expression #binExpr
+    | expression LT expression #binExpr
+    | expression LE expression #binExpr
+    | expression GT expression #binExpr
+    | expression GE expression #binExpr
+    | NOT expression #notExpr
+    | expression AND expression #binExpr
+    | expression OR expression #binExpr
+    | MINUS? INT #intConstant
+    | MINUS? ID #varExpr
     ;
 
 
@@ -57,6 +60,10 @@ DIV : '/' ;
 PLUS : '+';
 MINUS: '-';
 MOD : '%' ;
+
+AND : 'and';
+OR : 'or';
+NOT : 'not';
 
 ASSIGN : '=';
 SEMICOLON : ';';

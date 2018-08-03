@@ -1,6 +1,5 @@
 // Generated from /home/dkozak/projects/cimple/src/main/kotlin/io/dkozak/cimple/Cimple.g4 by ANTLR 4.7
 package io.dkozak.cimple;
-
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -8,7 +7,7 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * by {@link CimpleParser}.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
- *            operations with no return type.
+ * operations with no return type.
  */
 public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     /**
@@ -46,6 +45,15 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     T visitBinExpr(CimpleParser.BinExprContext ctx);
 
     /**
+     * Visit a parse tree produced by the {@code notExpr}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitNotExpr(CimpleParser.NotExprContext ctx);
+
+    /**
      * Visit a parse tree produced by the {@code intConstant}
      * labeled alternative in {@link CimpleParser#expression}.
      *
@@ -62,15 +70,6 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
      * @return the visitor result
      */
     T visitBracketExpr(CimpleParser.BracketExprContext ctx);
-
-    /**
-     * Visit a parse tree produced by the {@code logExpr}
-     * labeled alternative in {@link CimpleParser#expression}.
-     *
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    T visitLogExpr(CimpleParser.LogExprContext ctx);
 
     /**
      * Visit a parse tree produced by {@link CimpleParser#variableAssignment}.
