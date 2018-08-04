@@ -1,29 +1,40 @@
 package io.dkozak.cimple
 
-interface AstNode
+interface AstNode : AstVisitee
 
-data class Program(val statements: List<AstNode>) : AstNode
+data class Program(val statements: List<AstNode>) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitProgram(this)
+}
 
 abstract class Expression : AstNode
 
 data class VariableReference(
         val name: String
-) : Expression()
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitVariableReference(this)
+
+}
 
 data class IntegerLiteral(
         val value: Int
-) : Expression()
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitIntegerLiteral(this)
+}
 
 data class BinaryExpression(
         val operation: Operation,
         val left: Expression,
         val right: Expression
-) : Expression()
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitBinaryExpression(this)
+}
 
 data class UnaryExpression(
         val operation: Operation,
         val expression: Expression
-) : Expression()
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitUnaryExpression(this)
+}
 
 enum class Operation {
     AND,
@@ -46,49 +57,69 @@ data class UnresolvedBinaryExpression(
         val operation: String,
         val left: Expression,
         val right: Expression
-) : Expression()
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T {
+        TODO("not implemented")
+    }
+}
 
 data class VariableAssignment(
         val variable: VariableReference,
         val expression: Expression
-) : AstNode
+) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitVariableAssignment(this)
+}
 
 data class PrintStatement(
         val expression: Expression
-) : AstNode
+) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitPrintStatement(this)
+}
 
 data class InputStatement(
         val variable: VariableReference
-) : AstNode
+) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitInputStatement(this)
+}
 
 data class IfStatement(
         val expression: Expression,
         val thenStatements: List<AstNode>,
         val elseStatements: List<AstNode>
-) : AstNode
+) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitIfStatement(this)
+}
 
 data class ReturnStatement(
         val expression: Expression
-) : AstNode
+) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitReturnStatement(this)
+}
 
 data class ForLoop(
         val setup: VariableAssignment,
         val testExpression: Expression,
         val statements: List<AstNode>,
         val increment: VariableAssignment
-) : AstNode
+) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitForLoop(this)
+}
 
 
 data class FunctionDefinition(
         val name: String,
         val formalParameters: List<VariableReference>,
         var body: List<AstNode>? = null
-) : AstNode, Symbol
+) : AstNode, Symbol {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitFunctionDefinition(this)
+}
 
 data class FunctionCall(
         val function: FunctionDefinition,
         val arguments: List<Expression>
-) : Expression()
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitFunctionCall(this)
+}
 
 
 

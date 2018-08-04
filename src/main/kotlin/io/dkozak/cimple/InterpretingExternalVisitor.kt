@@ -1,7 +1,8 @@
 package io.dkozak.cimple
 
-class InterpretingVisitor(
-        val symbolTable: SymbolTable
+@Deprecated(message = "This external visitor was replaced by an internal visitor")
+class InterpretingExternalVisitor(
+        private val symbolTable: SymbolTable
 ) {
 
     fun start(program: Program) {

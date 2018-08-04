@@ -49,7 +49,7 @@ fun toAst(parseTree: ParseTree): Pair<Program, SymbolTable> {
 
 
 fun interpret(program: Program, symbolTable: SymbolTable) =
-        InterpretingVisitor(symbolTable).start(program)
+        InterpretingAstVisitor(symbolTable).visitProgram(program)
 
 
 class AntlrErrorHandler : BaseErrorListener() {
