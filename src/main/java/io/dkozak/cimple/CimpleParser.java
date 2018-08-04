@@ -97,7 +97,7 @@ public class CimpleParser extends Parser {
     private static final String[] _LITERAL_NAMES = {
             null, "'=='", "'!='", "'<'", "'<='", "'>'", "'>='", "'*'", "'/'", "'+'",
             "'-'", "'%'", "'and'", "'or'", "'not'", "'='", "';'", "'print'", "'input'",
-            "'FN'", "'for'", "'if'", "'else'", "'('", "')'", "'{'", "'}'"
+            "'fn'", "'for'", "'if'", "'else'", "'('", "')'", "'{'", "'}'"
     };
     private static final String[] _SYMBOLIC_NAMES = {
             null, "EQUALS", "NOT_EQUALS", "LT", "LE", "GT", "GE", "MULT", "DIV", "PLUS",

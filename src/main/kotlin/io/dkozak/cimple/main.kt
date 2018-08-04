@@ -39,7 +39,12 @@ fun parse(input: String): CimpleParser.ProgramContext {
 fun toAst(parseTree: ParseTree): Pair<Program, SymbolTable> {
     val visitor = AstCreatingVisitor()
     val ast = visitor.visit(parseTree) as Program
-    return ast to visitor.symbolTable
+    val symbolTable = visitor.symbolTable
+
+    // only function symbols should be passed into the interpreter
+    symbolTable.forgetVariables()
+
+    return ast to symbolTable
 }
 
 

@@ -90,7 +90,7 @@ SEMICOLON : ';';
 PRINT : 'print';
 INPUT : 'input';
 
-FN : 'FN';
+FN : 'fn';
 
 FOR : 'for';
 IF : 'if';

@@ -13,14 +13,17 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
     override fun visitFunctionDefinition(ctx: CimpleParser.FunctionDefinitionContext): AstNode {
         val name = ctx.ID(0).text
         val params = if (ctx.ID().size > 1)
-            ctx.ID().subList(1, ctx.ID().size).map {
-                val variableReference = VariableReference(it.text)
-                symbolTable.put(it.text, VariableSymbol(variableReference))
-                variableReference
-            } else emptyList()
+            ctx.ID().subList(1, ctx.ID().size).map { VariableReference(it.text) }
+        else emptyList()
+
+        symbolTable.push()
+        for (param in params) {
+            symbolTable.put(param.name, VariableSymbol(param))
+        }
         val statements = ctx.block().statement().map {
             it.accept(this)
         }
+        symbolTable.pop()
         val functionDefinition = FunctionDefinition(name, params, statements)
         symbolTable.put(name, functionDefinition)
         return functionDefinition

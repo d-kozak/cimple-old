@@ -19,11 +19,13 @@ class InterpretingVisitor(
                 is PrintStatement -> println(evaluateExpression(node.expression))
                 is IfStatement -> {
                     val condition = evaluateExpression(node.expression)
+                    symbolTable.push()
                     if (condition != 0) {
                         executeStatements(node.thenStatements)
                     } else {
                         executeStatements(node.elseStatements)
                     }
+                    symbolTable.pop()
                 }
                 is InputStatement -> {
                     print("${node.variable.name}:")
@@ -39,6 +41,7 @@ class InterpretingVisitor(
                     }
                 }
                 is ForLoop -> {
+                    symbolTable.push()
                     val variableSymbol = symbolTable.computeIfAbsent(node.setup.variable.name) { VariableSymbol(node.setup.variable) } as VariableSymbol
                     variableSymbol.value = evaluateExpression(node.setup.expression)
 
@@ -47,11 +50,23 @@ class InterpretingVisitor(
                         val incrementSymbol = symbolTable.computeIfAbsent(node.increment.variable.name) { VariableSymbol(node.increment.variable) } as VariableSymbol
                         incrementSymbol.value = evaluateExpression(node.increment.expression)
                     }
+                    symbolTable.pop()
                 }
                 is FunctionDefinition -> {
                     // nothing to do for it, just let it pass
                 }
                 is FunctionCall -> {
+                    symbolTable.push()
+
+                    val arguments = node.arguments.map { evaluateExpression(it) }
+                    for (i in 0 until arguments.size) {
+                        val parameter = node.function.formalParameters[i]
+                        val argument = arguments[i]
+                        symbolTable.put(parameter.name, VariableSymbol(parameter, argument))
+                    }
+                    executeStatements(node.function.body)
+
+                    symbolTable.pop()
                 }
                 else -> throw IllegalArgumentException("Unknown type of statement ${node.javaClass}")
             }

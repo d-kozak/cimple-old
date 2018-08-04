@@ -45,4 +45,15 @@ class SymbolTable {
 
     }
 
+    fun forgetVariables() {
+        if (symbolTable.size != 1) {
+            throw IllegalStateException("At this point, there should be only one table, for top level functions")
+        }
+        val topLevelSymbolTable = symbolTable[0]
+        val variableKeys = topLevelSymbolTable.entries.filter { it.value is VariableSymbol }
+                .map { it.key }
+        for (key in variableKeys) {
+            topLevelSymbolTable.remove(key)
+        }
+    }
 }

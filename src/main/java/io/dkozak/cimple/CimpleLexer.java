@@ -59,7 +59,7 @@ public class CimpleLexer extends Lexer {
                     "\\]\7t\2\2]\34\3\2\2\2^_\7p\2\2_`\7q\2\2`a\7v\2\2a\36\3\2\2\2bc\7?\2\2" +
                     "c \3\2\2\2de\7=\2\2e\"\3\2\2\2fg\7r\2\2gh\7t\2\2hi\7k\2\2ij\7p\2\2jk\7" +
                     "v\2\2k$\3\2\2\2lm\7k\2\2mn\7p\2\2no\7r\2\2op\7w\2\2pq\7v\2\2q&\3\2\2\2" +
-                    "rs\7H\2\2st\7P\2\2t(\3\2\2\2uv\7h\2\2vw\7q\2\2wx\7t\2\2x*\3\2\2\2yz\7" +
+                    "rs\7h\2\2st\7p\2\2t(\3\2\2\2uv\7h\2\2vw\7q\2\2wx\7t\2\2x*\3\2\2\2yz\7" +
                     "k\2\2z{\7h\2\2{,\3\2\2\2|}\7g\2\2}~\7n\2\2~\177\7u\2\2\177\u0080\7g\2" +
                     "\2\u0080.\3\2\2\2\u0081\u0082\7*\2\2\u0082\60\3\2\2\2\u0083\u0084\7+\2" +
                     "\2\u0084\62\3\2\2\2\u0085\u0086\7}\2\2\u0086\64\3\2\2\2\u0087\u0088\7" +
@@ -77,7 +77,7 @@ public class CimpleLexer extends Lexer {
     private static final String[] _LITERAL_NAMES = {
             null, "'=='", "'!='", "'<'", "'<='", "'>'", "'>='", "'*'", "'/'", "'+'",
             "'-'", "'%'", "'and'", "'or'", "'not'", "'='", "';'", "'print'", "'input'",
-            "'FN'", "'for'", "'if'", "'else'", "'('", "')'", "'{'", "'}'"
+            "'fn'", "'for'", "'if'", "'else'", "'('", "')'", "'{'", "'}'"
     };
     private static final String[] _SYMBOLIC_NAMES = {
             null, "EQUALS", "NOT_EQUALS", "LT", "LE", "GT", "GE", "MULT", "DIV", "PLUS",

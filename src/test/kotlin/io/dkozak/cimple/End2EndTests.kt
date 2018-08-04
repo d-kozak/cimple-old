@@ -7,13 +7,70 @@ import org.junit.Test
 
 class End2EndTests {
 
-    lateinit var myPrintStream: OutputCatchingPrintStream
+    private lateinit var myPrintStream: OutputCatchingPrintStream
 
     @Before
     fun before() {
         myPrintStream = OutputCatchingPrintStream(System.out)
         System.setOut(myPrintStream)
     }
+
+    @Test
+    fun `functionCall no params`() {
+        val input = """
+            fn foo(){
+                print 42;
+            }
+            foo();
+        """.trimIndent()
+
+        val parseTree = parse(input)
+        val (ast, symbolTable) = toAst(parseTree)
+        interpret(ast, symbolTable)
+
+        val expected = "42\n"
+        assertEquals(expected, myPrintStream.programOutput)
+    }
+
+    @Test
+    fun `functionCall use one input param`() {
+        val input = """
+            fn foo(x){
+                print x;
+            }
+            foo(42);
+        """.trimIndent()
+
+        val parseTree = parse(input)
+        val (ast, symbolTable) = toAst(parseTree)
+        interpret(ast, symbolTable)
+
+        val expected = "42\n"
+        assertEquals(expected, myPrintStream.programOutput)
+    }
+
+    @Test
+    fun `functionCall use one input param and condition`() {
+        val input = """
+            fn foo(x){
+                if(x > 9){
+                    print 42;
+                } else {
+                    print 21;
+                }
+            }
+            a = 10;
+            foo(a);
+        """.trimIndent()
+
+        val parseTree = parse(input)
+        val (ast, symbolTable) = toAst(parseTree)
+        interpret(ast, symbolTable)
+
+        val expected = "42\n"
+        assertEquals(expected, myPrintStream.programOutput)
+    }
+
 
     @Test
     fun assignAndPrint() {
