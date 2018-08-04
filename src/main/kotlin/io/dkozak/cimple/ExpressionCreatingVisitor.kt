@@ -9,9 +9,13 @@ class ExpressionAstCreatingVisitor(
         val functionName = ctx.ID().text
         val symbol = symbolTable.get(functionName)
         return if (symbol is FunctionDefinition) {
-            val arguments = ctx.expression().map {
-                it.accept(this)
-            }
+            val arguments = if (ctx.arguments() != null) {
+                ctx.arguments().expression()
+                        .map {
+                            ExpressionAstCreatingVisitor(symbolTable)
+                                    .visit(it)
+                        }
+            } else listOf()
             FunctionCall(symbol, arguments)
         } else {
             TODO("Handle semantic error")

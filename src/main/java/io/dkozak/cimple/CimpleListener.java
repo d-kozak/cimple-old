@@ -146,6 +146,20 @@ public interface CimpleListener extends ParseTreeListener {
     void exitFunctionCall(CimpleParser.FunctionCallContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link CimpleParser#arguments}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterArguments(CimpleParser.ArgumentsContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#arguments}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitArguments(CimpleParser.ArgumentsContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link CimpleParser#forLoop}.
      *
      * @param ctx the parse tree
@@ -246,6 +260,20 @@ public interface CimpleListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     void exitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link CimpleParser#parameters}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterParameters(CimpleParser.ParametersContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#parameters}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitParameters(CimpleParser.ParametersContext ctx);
 
     /**
      * Enter a parse tree produced by {@link CimpleParser#returnStatement}.

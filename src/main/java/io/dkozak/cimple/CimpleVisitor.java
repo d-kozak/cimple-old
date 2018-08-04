@@ -89,6 +89,14 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     T visitFunctionCall(CimpleParser.FunctionCallContext ctx);
 
     /**
+     * Visit a parse tree produced by {@link CimpleParser#arguments}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitArguments(CimpleParser.ArgumentsContext ctx);
+
+    /**
      * Visit a parse tree produced by {@link CimpleParser#forLoop}.
      *
      * @param ctx the parse tree
@@ -145,6 +153,14 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
      * @return the visitor result
      */
     T visitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link CimpleParser#parameters}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitParameters(CimpleParser.ParametersContext ctx);
 
     /**
      * Visit a parse tree produced by {@link CimpleParser#returnStatement}.

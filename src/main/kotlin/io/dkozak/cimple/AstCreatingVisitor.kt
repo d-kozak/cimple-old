@@ -11,9 +11,9 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
     }
 
     override fun visitFunctionDefinition(ctx: CimpleParser.FunctionDefinitionContext): AstNode {
-        val name = ctx.ID(0).text
-        val params = if (ctx.ID().size > 1)
-            ctx.ID().subList(1, ctx.ID().size).map { VariableReference(it.text) }
+        val name = ctx.ID().text
+        val params = if (ctx.parameters() != null)
+            ctx.parameters().ID().map { VariableReference(it.text) }
         else emptyList()
 
         val functionDefinition = FunctionDefinition(name, params)
@@ -34,11 +34,13 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
     override fun visitFunctionCall(ctx: CimpleParser.FunctionCallContext): AstNode {
         val symbol = symbolTable.get(ctx.ID().text)
         return if (symbol is FunctionDefinition) {
-            val arguments = ctx.expression()
-                    .map {
-                        ExpressionAstCreatingVisitor(symbolTable)
-                                .visit(it)
-                    }
+            val arguments = if (ctx.arguments() != null) {
+                ctx.arguments().expression()
+                        .map {
+                            ExpressionAstCreatingVisitor(symbolTable)
+                                    .visit(it)
+                        }
+            } else listOf()
             FunctionCall(symbol, arguments)
         } else {
             TODO("Handle semantic error")

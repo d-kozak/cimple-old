@@ -179,6 +179,24 @@ public class CimpleBaseListener implements CimpleListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterArguments(CimpleParser.ArgumentsContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitArguments(CimpleParser.ArgumentsContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterForLoop(CimpleParser.ForLoopContext ctx) {
     }
 
@@ -297,6 +315,24 @@ public class CimpleBaseListener implements CimpleListener {
      */
     @Override
     public void exitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterParameters(CimpleParser.ParametersContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitParameters(CimpleParser.ParametersContext ctx) {
     }
 
     /**

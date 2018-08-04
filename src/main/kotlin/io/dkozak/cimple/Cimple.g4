@@ -38,7 +38,11 @@ expression
     ;
 
 functionCall
-    : ID LPAREN expression (COMMA expression)* RPAREN
+    : ID LPAREN arguments? RPAREN
+    ;
+
+arguments
+    : expression (COMMA expression)*
     ;
 
 forLoop
@@ -63,8 +67,13 @@ ifStatement
     ;
 
 functionDefinition
-    : FN ID LPAREN ID (COMMA ID)* RPAREN block
+    : FN ID LPAREN parameters? RPAREN block
     ;
+
+parameters
+    : ID (COMMA ID)*
+    ;
+
 
 returnStatement
     : RETURN expression
