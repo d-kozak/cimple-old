@@ -1,8 +1,8 @@
 package io.dkozak.cimple
 
-class InterpretingVisitor {
-
-    val symbolTable: MutableMap<VariableReference, Int> = mutableMapOf()
+class InterpretingVisitor(
+        val symbolTable: SymbolTable
+) {
 
     fun start(program: Program) {
         executeStatements(program.statements)
@@ -11,7 +11,11 @@ class InterpretingVisitor {
     fun executeStatements(block: List<AstNode>) {
         for (node in block) {
             when (node) {
-                is VariableAssignment -> symbolTable[node.variable] = evaluateExpression(node.expression)
+                is VariableAssignment -> {
+                    val newValue = evaluateExpression(node.expression)
+                    val variableSymbol = symbolTable.computeIfAbsent(node.variable.name) { VariableSymbol(node.variable) } as VariableSymbol
+                    variableSymbol.value = newValue
+                }
                 is PrintStatement -> println(evaluateExpression(node.expression))
                 is IfStatement -> {
                     val condition = evaluateExpression(node.expression)
@@ -28,17 +32,26 @@ class InterpretingVisitor {
                         throw IllegalArgumentException("No input value read")
                     }
                     try {
-                        symbolTable[node.variable] = input.toInt()
+                        val variableSymbol = symbolTable.computeIfAbsent(node.variable.name) { VariableSymbol(node.variable) } as VariableSymbol
+                        variableSymbol.value = input.toInt()
                     } catch (ex: NumberFormatException) {
                         throw IllegalArgumentException("Input ${input} is not an integer")
                     }
                 }
                 is ForLoop -> {
-                    symbolTable[node.setup.variable] = evaluateExpression(node.setup.expression)
+                    val variableSymbol = symbolTable.computeIfAbsent(node.setup.variable.name) { VariableSymbol(node.setup.variable) } as VariableSymbol
+                    variableSymbol.value = evaluateExpression(node.setup.expression)
+
                     while (evaluateExpression(node.testExpression) != 0) {
                         executeStatements(node.statements)
-                        symbolTable[node.increment.variable] = evaluateExpression(node.increment.expression)
+                        val incrementSymbol = symbolTable.computeIfAbsent(node.increment.variable.name) { VariableSymbol(node.increment.variable) } as VariableSymbol
+                        incrementSymbol.value = evaluateExpression(node.increment.expression)
                     }
+                }
+                is FunctionDefinition -> {
+                    // nothing to do for it, just let it pass
+                }
+                is FunctionCall -> {
                 }
                 else -> throw IllegalArgumentException("Unknown type of statement ${node.javaClass}")
             }
@@ -46,7 +59,7 @@ class InterpretingVisitor {
     }
 
     fun evaluateExpression(expression: Expression) = when (expression) {
-        is VariableReference -> symbolTable[expression]!!
+        is VariableReference -> (symbolTable.get(expression.name) as VariableSymbol).value
         is IntegerLiteral -> expression.value
         is BinaryExpression -> evaluateBinaryExpression(expression)
         is UnaryExpression -> evaluateUnaryExpression(expression)

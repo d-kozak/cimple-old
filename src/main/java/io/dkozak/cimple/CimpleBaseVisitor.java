@@ -95,6 +95,28 @@ public class CimpleBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
      * {@link #visitChildren} on {@code ctx}.</p>
      */
     @Override
+    public T visitFunctionCallExpression(CimpleParser.FunctionCallExpressionContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
+    @Override
+    public T visitFunctionCall(CimpleParser.FunctionCallContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
+    @Override
     public T visitForLoop(CimpleParser.ForLoopContext ctx) {
         return visitChildren(ctx);
     }
@@ -151,6 +173,17 @@ public class CimpleBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
      */
     @Override
     public T visitIfElse(CimpleParser.IfElseContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
+    @Override
+    public T visitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx) {
         return visitChildren(ctx);
     }
 

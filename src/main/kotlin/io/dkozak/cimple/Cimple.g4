@@ -10,11 +10,14 @@ statement
     | printStatement SEMICOLON
     | ifStatement
     | forLoop
+    | functionCall SEMICOLON
+    | functionDefinition
     ;
 
 
 expression
-    : MINUS? LPAREN expression RPAREN #bracketExpr
+    : functionCall #functionCallExpression
+    | MINUS? LPAREN expression RPAREN #bracketExpr
     | expression MULT expression #binExpr
     | expression DIV expression #binExpr
     | expression MOD expression #binExpr
@@ -33,6 +36,9 @@ expression
     | MINUS? ID #varExpr
     ;
 
+functionCall
+    : ID LPAREN expression* RPAREN
+    ;
 
 forLoop
     : FOR LPAREN setup=variableAssignment SEMICOLON expression SEMICOLON increment=variableAssignment RPAREN block
@@ -53,6 +59,10 @@ inputStatement
 ifStatement
     : IF LPAREN expression RPAREN block #if
     |  IF LPAREN expression RPAREN block ELSE block #ifElse
+    ;
+
+functionDefinition
+    : FN ID LPAREN ID* RPAREN block
     ;
 
 block : LBRAC statement* RBRAC;
@@ -79,6 +89,8 @@ ASSIGN : '=';
 SEMICOLON : ';';
 PRINT : 'print';
 INPUT : 'input';
+
+FN : 'FN';
 
 FOR : 'for';
 IF : 'if';

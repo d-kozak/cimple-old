@@ -143,6 +143,42 @@ public class CimpleBaseListener implements CimpleListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterFunctionCallExpression(CimpleParser.FunctionCallExpressionContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitFunctionCallExpression(CimpleParser.FunctionCallExpressionContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterFunctionCall(CimpleParser.FunctionCallContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitFunctionCall(CimpleParser.FunctionCallContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterForLoop(CimpleParser.ForLoopContext ctx) {
     }
 
@@ -243,6 +279,24 @@ public class CimpleBaseListener implements CimpleListener {
      */
     @Override
     public void exitIfElse(CimpleParser.IfElseContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx) {
     }
 
     /**

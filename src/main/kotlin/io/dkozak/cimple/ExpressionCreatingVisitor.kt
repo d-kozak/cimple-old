@@ -1,13 +1,30 @@
 package io.dkozak.cimple
 
 class ExpressionAstCreatingVisitor(
-        private val symbolTable: Map<String, VariableReference>
+        private val symbolTable: SymbolTable
 ) : CimpleBaseVisitor<Expression>() {
 
+
+    override fun visitFunctionCall(ctx: CimpleParser.FunctionCallContext): Expression {
+        val functionName = ctx.ID().text
+        val symbol = symbolTable.get(functionName)
+        return if (symbol is FunctionDefinition) {
+            val arguments = ctx.expression().map {
+                it.accept(this)
+            }
+            FunctionCall(symbol, arguments)
+        } else {
+            TODO("Handle semantic error")
+        }
+    }
+
     override fun visitVarExpr(ctx: CimpleParser.VarExprContext): Expression {
-        val variable = symbolTable[ctx.text]
-                ?: UnresolvedVariableReference(ctx.text)
-        return if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, variable) else variable
+        val variableSymbol = symbolTable.get(ctx.text)
+        if (variableSymbol is VariableSymbol) {
+            return if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, variableSymbol.variableReference) else variableSymbol.variableReference
+        } else {
+            TODO("Handle semantic error")
+        }
     }
 
     override fun visitIntConstant(ctx: CimpleParser.IntConstantContext): Expression =

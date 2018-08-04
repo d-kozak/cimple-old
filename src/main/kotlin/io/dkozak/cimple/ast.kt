@@ -10,10 +10,6 @@ data class VariableReference(
         val name: String
 ) : Expression()
 
-data class UnresolvedVariableReference(
-        val name: String
-) : Expression()
-
 data class IntegerLiteral(
         val value: Int
 ) : Expression()
@@ -78,6 +74,18 @@ data class ForLoop(
         val statements: List<AstNode>,
         val increment: VariableAssignment
 ) : AstNode
+
+
+data class FunctionDefinition(
+        val name: String,
+        val formalParameters: List<VariableReference>,
+        val body: List<AstNode>
+) : AstNode, Symbol
+
+data class FunctionCall(
+        val function: FunctionDefinition,
+        val arguments: List<Expression>
+) : Expression()
 
 
 

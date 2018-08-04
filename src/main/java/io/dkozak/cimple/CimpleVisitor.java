@@ -72,6 +72,23 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     T visitBracketExpr(CimpleParser.BracketExprContext ctx);
 
     /**
+     * Visit a parse tree produced by the {@code functionCallExpression}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitFunctionCallExpression(CimpleParser.FunctionCallExpressionContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link CimpleParser#functionCall}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitFunctionCall(CimpleParser.FunctionCallContext ctx);
+
+    /**
      * Visit a parse tree produced by {@link CimpleParser#forLoop}.
      *
      * @param ctx the parse tree
@@ -120,6 +137,14 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
      * @return the visitor result
      */
     T visitIfElse(CimpleParser.IfElseContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link CimpleParser#functionDefinition}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx);
 
     /**
      * Visit a parse tree produced by {@link CimpleParser#block}.

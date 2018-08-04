@@ -116,6 +116,36 @@ public interface CimpleListener extends ParseTreeListener {
     void exitBracketExpr(CimpleParser.BracketExprContext ctx);
 
     /**
+     * Enter a parse tree produced by the {@code functionCallExpression}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterFunctionCallExpression(CimpleParser.FunctionCallExpressionContext ctx);
+
+    /**
+     * Exit a parse tree produced by the {@code functionCallExpression}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitFunctionCallExpression(CimpleParser.FunctionCallExpressionContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link CimpleParser#functionCall}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterFunctionCall(CimpleParser.FunctionCallContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#functionCall}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitFunctionCall(CimpleParser.FunctionCallContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link CimpleParser#forLoop}.
      *
      * @param ctx the parse tree
@@ -202,6 +232,20 @@ public interface CimpleListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     void exitIfElse(CimpleParser.IfElseContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link CimpleParser#functionDefinition}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#functionDefinition}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx);
 
     /**
      * Enter a parse tree produced by {@link CimpleParser#block}.
