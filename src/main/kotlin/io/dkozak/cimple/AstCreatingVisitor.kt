@@ -16,6 +16,9 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
             ctx.ID().subList(1, ctx.ID().size).map { VariableReference(it.text) }
         else emptyList()
 
+        val functionDefinition = FunctionDefinition(name, params)
+        symbolTable.put(name, functionDefinition)
+
         symbolTable.push()
         for (param in params) {
             symbolTable.put(param.name, VariableSymbol(param))
@@ -24,8 +27,7 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
             it.accept(this)
         }
         symbolTable.pop()
-        val functionDefinition = FunctionDefinition(name, params, statements)
-        symbolTable.put(name, functionDefinition)
+        functionDefinition.body = statements
         return functionDefinition
     }
 

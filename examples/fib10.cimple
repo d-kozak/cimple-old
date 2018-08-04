@@ -1,0 +1,16 @@
+
+
+fn fib(i){
+    if(i < 2){
+        return 1;
+    } else {
+        return fib(i - 1)  + fib(i - 2);
+    }
+}
+
+i = 10;
+
+for(j = 0; j < i ; j = j+1){
+    res = fib(j);
+    print res;
+}

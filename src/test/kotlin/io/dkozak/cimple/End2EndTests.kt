@@ -3,6 +3,7 @@ package io.dkozak.cimple
 import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
+import java.io.File
 
 
 class End2EndTests {
@@ -13,6 +14,30 @@ class End2EndTests {
     fun before() {
         myPrintStream = OutputCatchingPrintStream(System.out)
         System.setOut(myPrintStream)
+    }
+
+    @Test
+    fun fibonacci() {
+        val input = inputFromFile("fib10")
+
+        val parseTree = parse(input)
+        val (ast, symbolTable) = toAst(parseTree)
+        interpret(ast, symbolTable)
+
+        val expected = """
+            1
+            1
+            2
+            3
+            5
+            8
+            13
+            21
+            34
+            55
+
+        """.trimIndent()
+        assertEquals(expected, myPrintStream.programOutput)
     }
 
     @Test
@@ -120,7 +145,7 @@ class End2EndTests {
                     return x * y;
                 }
             }
-            print sumOrMult(1,3,5);
+            print plusOrMult(1,3,5);
         """.trimIndent()
 
         val parseTree = parse(input)
@@ -291,4 +316,7 @@ class End2EndTests {
         """.trimIndent()
         val parseTree = parse(input)
     }
+
+
+    fun inputFromFile(filename: String): String = File("examples/" + filename + ".cimple").readText()
 }

@@ -82,7 +82,7 @@ data class ForLoop(
 data class FunctionDefinition(
         val name: String,
         val formalParameters: List<VariableReference>,
-        val body: List<AstNode>
+        var body: List<AstNode>? = null
 ) : AstNode, Symbol
 
 data class FunctionCall(

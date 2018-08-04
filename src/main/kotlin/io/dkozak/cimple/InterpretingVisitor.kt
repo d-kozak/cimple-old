@@ -19,13 +19,17 @@ class InterpretingVisitor(
                 is PrintStatement -> println(evaluateExpression(node.expression))
                 is IfStatement -> {
                     val condition = evaluateExpression(node.expression)
+                    var retVal: Int?
                     symbolTable.push()
                     if (condition != 0) {
-                        executeStatements(node.thenStatements)
+                        retVal = executeStatements(node.thenStatements)
                     } else {
-                        executeStatements(node.elseStatements)
+                        retVal = executeStatements(node.elseStatements)
                     }
                     symbolTable.pop()
+
+                    if (retVal != null)
+                        return retVal
                 }
                 is InputStatement -> {
                     print("${node.variable.name}:")
@@ -45,12 +49,18 @@ class InterpretingVisitor(
                     val variableSymbol = symbolTable.computeIfAbsent(node.setup.variable.name) { VariableSymbol(node.setup.variable) } as VariableSymbol
                     variableSymbol.value = evaluateExpression(node.setup.expression)
 
+                    var retVal: Int? = null
+
                     while (evaluateExpression(node.testExpression) != 0) {
-                        executeStatements(node.statements)
+                        retVal = executeStatements(node.statements)
+                        if (retVal != null)
+                            break
                         val incrementSymbol = symbolTable.computeIfAbsent(node.increment.variable.name) { VariableSymbol(node.increment.variable) } as VariableSymbol
                         incrementSymbol.value = evaluateExpression(node.increment.expression)
                     }
                     symbolTable.pop()
+                    if (retVal != null)
+                        return retVal
                 }
                 is FunctionDefinition -> {
                     // nothing to do for it, just let it pass
@@ -76,7 +86,7 @@ class InterpretingVisitor(
             val argument = arguments[i]
             symbolTable.put(parameter.name, VariableSymbol(parameter, argument))
         }
-        val retVal = executeStatements(node.function.body)
+        val retVal = executeStatements(node.function.body!!)
 
         symbolTable.pop()
 

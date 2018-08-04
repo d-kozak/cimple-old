@@ -38,7 +38,7 @@ expression
     ;
 
 functionCall
-    : ID LPAREN expression* RPAREN
+    : ID LPAREN expression (COMMA expression)* RPAREN
     ;
 
 forLoop
@@ -63,7 +63,7 @@ ifStatement
     ;
 
 functionDefinition
-    : FN ID LPAREN ID* RPAREN block
+    : FN ID LPAREN ID (COMMA ID)* RPAREN block
     ;
 
 returnStatement
@@ -102,6 +102,8 @@ IF : 'if';
 ELSE : 'else';
 
 RETURN : 'return';
+
+COMMA : ',';
 
 LPAREN : '(';
 RPAREN : ')';
