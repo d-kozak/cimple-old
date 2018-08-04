@@ -147,6 +147,14 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     T visitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx);
 
     /**
+     * Visit a parse tree produced by {@link CimpleParser#returnStatement}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitReturnStatement(CimpleParser.ReturnStatementContext ctx);
+
+    /**
      * Visit a parse tree produced by {@link CimpleParser#block}.
      *
      * @param ctx the parse tree

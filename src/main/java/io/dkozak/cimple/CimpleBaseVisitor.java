@@ -194,6 +194,17 @@ public class CimpleBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
      * {@link #visitChildren} on {@code ctx}.</p>
      */
     @Override
+    public T visitReturnStatement(CimpleParser.ReturnStatementContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
+    @Override
     public T visitBlock(CimpleParser.BlockContext ctx) {
         return visitChildren(ctx);
     }

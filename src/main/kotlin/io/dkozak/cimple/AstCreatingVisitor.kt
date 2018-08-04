@@ -43,6 +43,8 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
         }
     }
 
+    override fun visitReturnStatement(ctx: CimpleParser.ReturnStatementContext): AstNode = ReturnStatement(ExpressionAstCreatingVisitor(symbolTable).visit(ctx.expression()))
+
     override fun visitStatement(ctx: CimpleParser.StatementContext): AstNode = ctx.getChild(0).accept(this) // ignore SEMICOLON
 
     override fun visitVariableAssignment(ctx: CimpleParser.VariableAssignmentContext): AstNode {

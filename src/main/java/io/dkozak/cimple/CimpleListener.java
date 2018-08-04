@@ -248,6 +248,20 @@ public interface CimpleListener extends ParseTreeListener {
     void exitFunctionDefinition(CimpleParser.FunctionDefinitionContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link CimpleParser#returnStatement}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterReturnStatement(CimpleParser.ReturnStatementContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#returnStatement}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitReturnStatement(CimpleParser.ReturnStatementContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link CimpleParser#block}.
      *
      * @param ctx the parse tree

@@ -71,6 +71,66 @@ class End2EndTests {
         assertEquals(expected, myPrintStream.programOutput)
     }
 
+    @Test
+    fun `functionCall with return value, no arguments`() {
+        val input = """
+            fn foo(){
+                return -1;
+            }
+            print foo();
+        """.trimIndent()
+
+        val parseTree = parse(input)
+        val (ast, symbolTable) = toAst(parseTree)
+        interpret(ast, symbolTable)
+
+        val expected = "-1\n"
+        assertEquals(expected, myPrintStream.programOutput)
+    }
+
+
+    @Test
+    fun `functionCall with one argument and inner cycle`() {
+        val input = """
+            fn sum(limit){
+                a = 0;
+                for(i = 1 ; i <= limit ; i = i+1){
+                    a = a + i;
+                }
+                return a;
+            }
+            print sum(5);
+        """.trimIndent()
+
+        val parseTree = parse(input)
+        val (ast, symbolTable) = toAst(parseTree)
+        interpret(ast, symbolTable)
+
+        val expected = "15\n"
+        assertEquals(expected, myPrintStream.programOutput)
+    }
+
+    @Test
+    fun `functionCall with three arguments and if`() {
+        val input = """
+            fn plusOrMult(cond,x,y){
+                if(cond){
+                    return x + y;
+                } else {
+                    return x * y;
+                }
+            }
+            print sumOrMult(1,3,5);
+        """.trimIndent()
+
+        val parseTree = parse(input)
+        val (ast, symbolTable) = toAst(parseTree)
+        interpret(ast, symbolTable)
+
+        val expected = "8\n"
+        assertEquals(expected, myPrintStream.programOutput)
+    }
+
 
     @Test
     fun assignAndPrint() {

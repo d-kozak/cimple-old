@@ -12,6 +12,7 @@ statement
     | forLoop
     | functionCall SEMICOLON
     | functionDefinition
+    | returnStatement SEMICOLON
     ;
 
 
@@ -65,6 +66,10 @@ functionDefinition
     : FN ID LPAREN ID* RPAREN block
     ;
 
+returnStatement
+    : RETURN expression
+    ;
+
 block : LBRAC statement* RBRAC;
 
 
@@ -95,6 +100,8 @@ FN : 'fn';
 FOR : 'for';
 IF : 'if';
 ELSE : 'else';
+
+RETURN : 'return';
 
 LPAREN : '(';
 RPAREN : ')';

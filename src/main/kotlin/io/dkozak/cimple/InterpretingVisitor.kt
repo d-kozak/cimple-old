@@ -8,7 +8,7 @@ class InterpretingVisitor(
         executeStatements(program.statements)
     }
 
-    fun executeStatements(block: List<AstNode>) {
+    fun executeStatements(block: List<AstNode>): Int? {
         for (node in block) {
             when (node) {
                 is VariableAssignment -> {
@@ -56,21 +56,31 @@ class InterpretingVisitor(
                     // nothing to do for it, just let it pass
                 }
                 is FunctionCall -> {
-                    symbolTable.push()
-
-                    val arguments = node.arguments.map { evaluateExpression(it) }
-                    for (i in 0 until arguments.size) {
-                        val parameter = node.function.formalParameters[i]
-                        val argument = arguments[i]
-                        symbolTable.put(parameter.name, VariableSymbol(parameter, argument))
-                    }
-                    executeStatements(node.function.body)
-
-                    symbolTable.pop()
+                    evaluateFunctionCall(node)
+                }
+                is ReturnStatement -> {
+                    return evaluateExpression(node.expression)
                 }
                 else -> throw IllegalArgumentException("Unknown type of statement ${node.javaClass}")
             }
         }
+        return null
+    }
+
+    private fun evaluateFunctionCall(node: FunctionCall): Int? {
+        symbolTable.push()
+
+        val arguments = node.arguments.map { evaluateExpression(it) }
+        for (i in 0 until arguments.size) {
+            val parameter = node.function.formalParameters[i]
+            val argument = arguments[i]
+            symbolTable.put(parameter.name, VariableSymbol(parameter, argument))
+        }
+        val retVal = executeStatements(node.function.body)
+
+        symbolTable.pop()
+
+        return retVal
     }
 
     fun evaluateExpression(expression: Expression) = when (expression) {
@@ -78,6 +88,7 @@ class InterpretingVisitor(
         is IntegerLiteral -> expression.value
         is BinaryExpression -> evaluateBinaryExpression(expression)
         is UnaryExpression -> evaluateUnaryExpression(expression)
+        is FunctionCall -> evaluateFunctionCall(expression)!!
         else -> throw IllegalArgumentException("Unknown type of expression ${expression.javaClass}")
     }
 

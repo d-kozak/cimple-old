@@ -28,7 +28,7 @@ class ExpressionAstCreatingVisitor(
     }
 
     override fun visitIntConstant(ctx: CimpleParser.IntConstantContext): Expression =
-            if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, IntegerLiteral(ctx.text.toInt()))
+            if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, IntegerLiteral(ctx.INT().text.toInt()))
             else IntegerLiteral(ctx.text.toInt())
 
     override fun visitNotExpr(ctx: CimpleParser.NotExprContext): Expression = UnaryExpression(Operation.NOT, ctx.expression().accept(this))

@@ -67,6 +67,9 @@ data class IfStatement(
         val elseStatements: List<AstNode>
 ) : AstNode
 
+data class ReturnStatement(
+        val expression: Expression
+) : AstNode
 
 data class ForLoop(
         val setup: VariableAssignment,
