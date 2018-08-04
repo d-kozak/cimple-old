@@ -154,4 +154,24 @@ class End2EndTests {
         assertEquals(expected, myPrintStream.programOutput)
 
     }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `invalidForLoop missing semicolon between setup and testCondition`() {
+        val input = """
+            for(i = 0 i < 10 ; i = i + 1){
+                print i;
+            }
+        """.trimIndent()
+        val parseTree = parse(input)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `invalidIf typo in ifs instread of if`() {
+        val input = """
+            ifs(a){
+                print 10;
+            }
+        """.trimIndent()
+        val parseTree = parse(input)
+    }
 }

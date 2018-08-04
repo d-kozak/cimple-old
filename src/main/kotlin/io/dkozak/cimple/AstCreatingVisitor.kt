@@ -2,7 +2,7 @@ package io.dkozak.cimple
 
 class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
 
-    private val symbolTable = SymbolTable()
+    val symbolTable = SymbolTable()
 
     override fun visitProgram(ctx: CimpleParser.ProgramContext): AstNode {
         val nodes = ctx.statement()
