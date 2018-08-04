@@ -35,6 +35,8 @@ expression
     | expression OR expression #binExpr
     | MINUS? INT #intConstant
     | MINUS? ID #varExpr
+    | MINUS? DOUBLE #doubleConstant
+    | STRING #stringConstant
     ;
 
 functionCall
@@ -119,6 +121,8 @@ RPAREN : ')';
 LBRAC : '{';
 RBRAC : '}';
 
+STRING : '"'.*?'"';
+DOUBLE : [0-9]+'.'[0-9]+ ;
 INT : [0-9]+;
 ID : [a-zA-Z_][a-zA-Z0-9_]*;
 

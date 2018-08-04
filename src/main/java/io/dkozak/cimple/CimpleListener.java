@@ -116,6 +116,38 @@ public interface CimpleListener extends ParseTreeListener {
     void exitBracketExpr(CimpleParser.BracketExprContext ctx);
 
     /**
+     * Enter a parse tree produced by the {@code stringConstant}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterStringConstant(CimpleParser.StringConstantContext ctx);
+
+    /**
+     * Exit a parse tree produced by the {@code stringConstant}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitStringConstant(CimpleParser.StringConstantContext ctx);
+
+    /**
+     * Enter a parse tree produced by the {@code doubleConstant}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterDoubleConstant(CimpleParser.DoubleConstantContext ctx);
+
+    /**
+     * Exit a parse tree produced by the {@code doubleConstant}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitDoubleConstant(CimpleParser.DoubleConstantContext ctx);
+
+    /**
      * Enter a parse tree produced by the {@code functionCallExpression}
      * labeled alternative in {@link CimpleParser#expression}.
      *

@@ -1,5 +1,9 @@
 package io.dkozak.cimple
 
+/**
+* Just an example of interpreter build as external tree walker, no longer maintained and integrated with rest of the platform
+*/
+
 @Deprecated(message = "This external visitor was replaced by an internal visitor")
 class InterpretingExternalVisitor(
         private val symbolTable: SymbolTable

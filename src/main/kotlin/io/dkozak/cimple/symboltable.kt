@@ -4,7 +4,7 @@ interface Symbol
 
 data class VariableSymbol(
         val variableReference: VariableReference,
-        var value: Int = 0
+        var value: Value = IntegerValue(0)
 ) : Symbol
 
 

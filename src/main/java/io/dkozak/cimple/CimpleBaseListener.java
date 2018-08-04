@@ -143,6 +143,42 @@ public class CimpleBaseListener implements CimpleListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterStringConstant(CimpleParser.StringConstantContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitStringConstant(CimpleParser.StringConstantContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterDoubleConstant(CimpleParser.DoubleConstantContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitDoubleConstant(CimpleParser.DoubleConstantContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterFunctionCallExpression(CimpleParser.FunctionCallExpressionContext ctx) {
     }
 

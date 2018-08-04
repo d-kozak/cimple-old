@@ -72,6 +72,24 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     T visitBracketExpr(CimpleParser.BracketExprContext ctx);
 
     /**
+     * Visit a parse tree produced by the {@code stringConstant}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitStringConstant(CimpleParser.StringConstantContext ctx);
+
+    /**
+     * Visit a parse tree produced by the {@code doubleConstant}
+     * labeled alternative in {@link CimpleParser#expression}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitDoubleConstant(CimpleParser.DoubleConstantContext ctx);
+
+    /**
      * Visit a parse tree produced by the {@code functionCallExpression}
      * labeled alternative in {@link CimpleParser#expression}.
      *

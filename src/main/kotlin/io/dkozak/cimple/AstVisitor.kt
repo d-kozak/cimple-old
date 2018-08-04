@@ -4,6 +4,8 @@ interface AstVisitor<T> {
     fun visitProgram(program: Program): T
     fun visitVariableReference(variableReference: VariableReference): T
     fun visitIntegerLiteral(integerLiteral: IntegerLiteral): T
+    fun visitDoubleLiteral(DoubleLiteral: DoubleLiteral): T
+    fun visitStringLiteral(StringLiteral: StringLiteral): T
     fun visitBinaryExpression(binaryExpression: BinaryExpression): T
     fun visitUnaryExpression(unaryExpression: UnaryExpression): T
     fun visitVariableAssignment(variableAssignment: VariableAssignment): T

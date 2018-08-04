@@ -31,6 +31,12 @@ class ExpressionAstCreatingVisitor(
         }
     }
 
+    override fun visitDoubleConstant(ctx: CimpleParser.DoubleConstantContext): Expression =
+            if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, DoubleLiteral(ctx.DOUBLE().text.toDouble()))
+            else DoubleLiteral(ctx.text.toDouble())
+
+    override fun visitStringConstant(ctx: CimpleParser.StringConstantContext): Expression = StringLiteral(ctx.text)
+
     override fun visitIntConstant(ctx: CimpleParser.IntConstantContext): Expression =
             if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, IntegerLiteral(ctx.INT().text.toInt()))
             else IntegerLiteral(ctx.text.toInt())

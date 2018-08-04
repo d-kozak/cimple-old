@@ -21,6 +21,18 @@ data class IntegerLiteral(
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitIntegerLiteral(this)
 }
 
+data class DoubleLiteral(
+        val value: Double
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitDoubleLiteral(this)
+}
+
+data class StringLiteral(
+        val value: String
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitStringLiteral(this)
+}
+
 data class BinaryExpression(
         val operation: Operation,
         val left: Expression,
