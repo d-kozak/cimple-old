@@ -7,20 +7,30 @@ class OutputCatchingPrintStream(outputStream: OutputStream) : PrintStream(output
 
     private val messages = mutableListOf<String>()
 
+    private var isEnabled = true
+
     override fun println(input: Any?) {
-        messages.add(input.toString())
+        if (isEnabled) messages.add(input.toString()) else super.println(input)
+
     }
 
     override fun println(message: String) {
-        messages.add(message)
+        if (isEnabled) messages.add(message) else super.println(message)
+
     }
 
     override fun println(num: Int) {
-        messages.add(num.toString())
+        if (isEnabled) messages.add(num.toString()) else super.println(num)
+
     }
 
     override fun println(num: Double) {
-        messages.add(num.toString())
+        if (isEnabled) messages.add(num.toString()) else super.println(num)
+
+    }
+
+    fun disable() {
+        isEnabled = false
     }
 
     val programOutput: String

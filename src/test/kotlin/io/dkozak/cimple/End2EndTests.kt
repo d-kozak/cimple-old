@@ -16,6 +16,7 @@ class End2EndTests {
         System.setOut(myPrintStream)
     }
 
+
     @Test
     fun fibonacci() {
         val input = inputFromFile("fib10")
@@ -315,6 +316,21 @@ class End2EndTests {
             }
         """.trimIndent()
         val parseTree = parse(input)
+    }
+
+    @Test(expected = StackOverflowError::class)
+    fun stackOverflow() {
+        val input = """
+            fn foo(x){
+                print x;
+                foo(x + 1);
+            }
+            foo(1);
+        """.trimIndent()
+        myPrintStream.disable()
+        val parseTree = parse(input)
+        val (ast, symbolTable) = toAst(parseTree)
+        interpret(ast, symbolTable)
     }
 
 
