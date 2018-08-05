@@ -1,5 +1,14 @@
 package io.dkozak.cimple
 
+
+enum class Type {
+    INT,
+    DOUBLE,
+    STRING,
+    UNKNOWN,
+    INVALID
+}
+
 sealed class Value {
     abstract operator fun plus(other: Value): Value
     abstract operator fun minus(other: Value): Value

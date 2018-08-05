@@ -4,8 +4,8 @@ class InterpretingAstVisitor(
         private val symbolTable: SymbolTable
 ) : AstVisitor<Value?> {
 
-    fun visitStatements(statements: List<AstNode>): Value? {
-        for (statement in statements) {
+    fun interpretStatements(nodes: List<AstNode>): Value? {
+        for (statement in nodes) {
             val retVal = statement.accept(this)
             if (retVal != null)
                 return retVal
@@ -13,17 +13,17 @@ class InterpretingAstVisitor(
         return null
     }
 
-    override fun visitProgram(program: Program): Value? = visitStatements(program.statements)
+    override fun visitProgram(program: Program): Value? = interpretStatements(program.statements)
 
     override fun visitVariableReference(variableReference: VariableReference): Value? = (symbolTable.get(variableReference.name) as VariableSymbol).value
 
     override fun visitIntegerLiteral(integerLiteral: IntegerLiteral): Value? = IntegerValue(integerLiteral.value)
 
-    override fun visitDoubleLiteral(DoubleLiteral: DoubleLiteral): Value? {
+    override fun visitDoubleLiteral(doubleLiteral: DoubleLiteral): Value? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun visitStringLiteral(StringLiteral: StringLiteral): Value? {
+    override fun visitStringLiteral(stringLiteral: StringLiteral): Value? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -85,9 +85,9 @@ class InterpretingAstVisitor(
         val retVal: Value?
         symbolTable.push()
         if (condition.isTrue()) {
-            retVal = visitStatements(ifStatement.thenStatements)
+            retVal = interpretStatements(ifStatement.thenStatements)
         } else {
-            retVal = visitStatements(ifStatement.elseStatements)
+            retVal = interpretStatements(ifStatement.elseStatements)
         }
         symbolTable.pop()
         return retVal
@@ -103,7 +103,7 @@ class InterpretingAstVisitor(
         var retVal: Value? = null
 
         while (forLoop.testExpression.accept(this)!!.isTrue()) {
-            retVal = visitStatements(forLoop.statements)
+            retVal = interpretStatements(forLoop.statements)
             if (retVal != null)
                 break
             val incrementSymbol = symbolTable.computeIfAbsent(forLoop.increment.variable.name) { VariableSymbol(forLoop.increment.variable) } as VariableSymbol
@@ -127,7 +127,7 @@ class InterpretingAstVisitor(
             val argument = arguments[i]
             symbolTable.put(parameter.name, VariableSymbol(parameter, argument))
         }
-        val retVal = visitStatements(functionCall.function.body!!)
+        val retVal = interpretStatements(functionCall.function.body!!)
 
         symbolTable.pop()
 

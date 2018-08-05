@@ -6,7 +6,7 @@ data class Program(val statements: List<AstNode>) : AstNode {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitProgram(this)
 }
 
-abstract class Expression : AstNode
+abstract class Expression(var type: Type = Type.UNKNOWN) : AstNode
 
 data class VariableReference(
         val name: String
@@ -131,6 +131,10 @@ data class FunctionCall(
         val arguments: List<Expression>
 ) : Expression() {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitFunctionCall(this)
+
+
+    override fun toString(): String = "FunctionCall(function=${function.name},argsCount=${arguments.size})"
+
 }
 
 

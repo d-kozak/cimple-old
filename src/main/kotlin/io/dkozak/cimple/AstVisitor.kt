@@ -4,8 +4,8 @@ interface AstVisitor<T> {
     fun visitProgram(program: Program): T
     fun visitVariableReference(variableReference: VariableReference): T
     fun visitIntegerLiteral(integerLiteral: IntegerLiteral): T
-    fun visitDoubleLiteral(DoubleLiteral: DoubleLiteral): T
-    fun visitStringLiteral(StringLiteral: StringLiteral): T
+    fun visitDoubleLiteral(doubleLiteral: DoubleLiteral): T
+    fun visitStringLiteral(stringLiteral: StringLiteral): T
     fun visitBinaryExpression(binaryExpression: BinaryExpression): T
     fun visitUnaryExpression(unaryExpression: UnaryExpression): T
     fun visitVariableAssignment(variableAssignment: VariableAssignment): T
@@ -16,6 +16,16 @@ interface AstVisitor<T> {
     fun visitForLoop(forLoop: ForLoop): T
     fun visitFunctionDefinition(functionDefinition: FunctionDefinition): T
     fun visitFunctionCall(functionCall: FunctionCall): T
+
+    fun visitNodes(nodes: List<AstNode>) {
+        for (statement in nodes) {
+            statement.accept(this)
+        }
+    }
+
+    fun visit(node: AstNode) {
+        node.accept(this)
+    }
 }
 
 interface AstVisitee {

@@ -3,7 +3,6 @@ package io.dkozak.cimple
 import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
-import java.io.File
 
 
 class End2EndTests {
@@ -334,5 +333,4 @@ class End2EndTests {
     }
 
 
-    fun inputFromFile(filename: String): String = File("examples/" + filename + ".cimple").readText()
 }
