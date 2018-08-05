@@ -1,4 +1,4 @@
-package io.dkozak.cimple
+package io.dkozak.cimple.typesystem
 
 
 enum class Type {

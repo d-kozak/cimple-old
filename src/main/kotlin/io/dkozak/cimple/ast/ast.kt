@@ -1,4 +1,7 @@
-package io.dkozak.cimple
+package io.dkozak.cimple.ast
+
+import io.dkozak.cimple.Symbol
+import io.dkozak.cimple.typesystem.Type
 
 interface AstNode : AstVisitee
 
@@ -8,11 +11,24 @@ data class Program(val statements: List<AstNode>) : AstNode {
 
 abstract class Expression(var type: Type = Type.UNKNOWN) : AstNode
 
+data class ParameterDefinition(
+        val name: String,
+        val type: Type
+) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitParameterDefinition(this)
+}
+
 data class VariableReference(
         val name: String
 ) : Expression() {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitVariableReference(this)
+}
 
+data class UnresolvedVariableReference(
+        val name: String
+) : Expression() {
+
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitUnresolvedVariableReference(this)
 }
 
 data class IntegerLiteral(
@@ -41,6 +57,15 @@ data class BinaryExpression(
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitBinaryExpression(this)
 }
 
+data class UnresolvedBinaryExpression(
+        val operation: String,
+        val left: Expression,
+        val right: Expression
+) : Expression() {
+    override fun <T> accept(visitor: AstVisitor<T>): T = throw IllegalStateException("Never meant for visiting")
+
+}
+
 data class UnaryExpression(
         val operation: Operation,
         val expression: Expression
@@ -65,22 +90,13 @@ enum class Operation {
     MOD
 }
 
-data class UnresolvedBinaryExpression(
-        val operation: String,
-        val left: Expression,
-        val right: Expression
-) : Expression() {
-    override fun <T> accept(visitor: AstVisitor<T>): T {
-        TODO("not implemented")
-    }
-}
-
 data class VariableAssignment(
         val variable: VariableReference,
         val expression: Expression
 ) : AstNode {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitVariableAssignment(this)
 }
+
 
 data class PrintStatement(
         val expression: Expression
@@ -89,7 +105,8 @@ data class PrintStatement(
 }
 
 data class InputStatement(
-        val variable: VariableReference
+        val name: String,
+        val type: Type
 ) : AstNode {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitInputStatement(this)
 }
@@ -120,8 +137,8 @@ data class ForLoop(
 
 data class FunctionDefinition(
         val name: String,
-        val formalParameters: List<VariableReference>,
-        var body: List<AstNode>? = null
+        var formalParameters: List<ParameterDefinition>,
+        var body: List<AstNode>
 ) : AstNode, Symbol {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitFunctionDefinition(this)
 }
@@ -135,6 +152,14 @@ data class FunctionCall(
 
     override fun toString(): String = "FunctionCall(function=${function.name},argsCount=${arguments.size})"
 
+}
+
+data class UnresolvedFunctionCall(
+        val functionName: String,
+        val arguments: List<Expression>
+) : Expression() {
+
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitUnresolvedFunctionCall(this)
 }
 
 

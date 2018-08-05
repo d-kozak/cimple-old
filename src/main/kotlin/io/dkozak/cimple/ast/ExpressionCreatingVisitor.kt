@@ -1,35 +1,24 @@
-package io.dkozak.cimple
+package io.dkozak.cimple.ast
+
+import io.dkozak.cimple.CimpleBaseVisitor
+import io.dkozak.cimple.CimpleParser
 
 class ExpressionAstCreatingVisitor(
-        private val symbolTable: SymbolTable
+        val errors: MutableList<String>
 ) : CimpleBaseVisitor<Expression>() {
 
 
-    override fun visitFunctionCall(ctx: CimpleParser.FunctionCallContext): Expression {
-        val functionName = ctx.ID().text
-        val symbol = symbolTable.get(functionName)
-        return if (symbol is FunctionDefinition) {
-            val arguments = if (ctx.arguments() != null) {
-                ctx.arguments().expression()
-                        .map {
-                            ExpressionAstCreatingVisitor(symbolTable)
-                                    .visit(it)
-                        }
-            } else listOf()
-            FunctionCall(symbol, arguments)
-        } else {
-            TODO("Handle semantic error")
-        }
-    }
+    override fun visitFunctionCall(ctx: CimpleParser.FunctionCallContext): Expression =
+            UnresolvedFunctionCall(
+                    ctx.ID().text,
+                    ctx.arguments()?.expression()?.map(this::visit) ?: emptyList()
+            )
 
-    override fun visitVarExpr(ctx: CimpleParser.VarExprContext): Expression {
-        val variableSymbol = symbolTable.get(ctx.text)
-        if (variableSymbol is VariableSymbol) {
-            return if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, variableSymbol.variableReference) else variableSymbol.variableReference
-        } else {
-            TODO("Handle semantic error")
-        }
-    }
+    override fun visitVarExpr(ctx: CimpleParser.VarExprContext): Expression =
+            UnresolvedVariableReference(ctx.text).let {
+                if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, it) else it
+            }
+
 
     override fun visitDoubleConstant(ctx: CimpleParser.DoubleConstantContext): Expression =
             if (ctx.MINUS() != null) UnaryExpression(Operation.MINUS, DoubleLiteral(ctx.DOUBLE().text.toDouble()))
@@ -60,6 +49,8 @@ class ExpressionAstCreatingVisitor(
         "and" -> createBinaryExpression(Operation.AND, ctx)
         "or" -> createBinaryExpression(Operation.OR, ctx)
         else -> UnresolvedBinaryExpression(ctx.children[1].text, ctx.expression(0).accept(this), ctx.expression(1).accept(this))
+                .also { errors.add(it.toString()) }
+
     }
 
     private fun createBinaryExpression(operation: Operation, ctx: CimpleParser.BinExprContext) = BinaryExpression(operation, ctx.expression(0).accept(this), ctx.expression(1).accept(this))

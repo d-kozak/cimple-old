@@ -1,8 +1,11 @@
-package io.dkozak.cimple
+package io.dkozak.cimple.ast
 
 interface AstVisitor<T> {
     fun visitProgram(program: Program): T
+
     fun visitVariableReference(variableReference: VariableReference): T
+    fun visitUnresolvedVariableReference(unresolvedVariableReference: UnresolvedVariableReference): T
+
     fun visitIntegerLiteral(integerLiteral: IntegerLiteral): T
     fun visitDoubleLiteral(doubleLiteral: DoubleLiteral): T
     fun visitStringLiteral(stringLiteral: StringLiteral): T
@@ -14,18 +17,17 @@ interface AstVisitor<T> {
     fun visitIfStatement(ifStatement: IfStatement): T
     fun visitReturnStatement(returnStatement: ReturnStatement): T
     fun visitForLoop(forLoop: ForLoop): T
+
     fun visitFunctionDefinition(functionDefinition: FunctionDefinition): T
+    fun visitParameterDefinition(parameterDefinition: ParameterDefinition): T
+
     fun visitFunctionCall(functionCall: FunctionCall): T
 
-    fun visitNodes(nodes: List<AstNode>) {
-        for (statement in nodes) {
-            statement.accept(this)
-        }
-    }
+    fun visitUnresolvedFunctionCall(unresolvedFunctionCall: UnresolvedFunctionCall): T
 
-    fun visit(node: AstNode) {
-        node.accept(this)
-    }
+    fun visitNodes(nodes: List<AstNode>) = nodes.map(this::visit)
+    fun visit(node: AstNode) = node.accept(this)
+
 }
 
 interface AstVisitee {

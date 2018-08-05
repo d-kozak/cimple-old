@@ -1,9 +1,12 @@
 package io.dkozak.cimple
 
+import io.dkozak.cimple.typesystem.IntegerValue
+import io.dkozak.cimple.typesystem.Value
+
 interface Symbol
 
 data class VariableSymbol(
-        val variableReference: VariableReference,
+        val variableName: String,
         var value: Value = IntegerValue(0)
 ) : Symbol
 
@@ -12,7 +15,7 @@ class SymbolTable {
 
     private val symbolTable: MutableList<MutableMap<String, Symbol>> = mutableListOf(mutableMapOf())
 
-    fun get(name: String): Symbol? {
+    operator fun get(name: String): Symbol? {
         var symbol: Symbol? = null
         for (i in symbolTable.size - 1 downTo 0) {
             symbol = symbolTable[i][name]
@@ -22,7 +25,7 @@ class SymbolTable {
         return symbol
     }
 
-    fun put(name: String, symbol: Symbol) {
+    operator fun set(name: String, symbol: Symbol) {
         symbolTable[symbolTable.size - 1][name] = symbol
     }
 
@@ -39,7 +42,7 @@ class SymbolTable {
         return if (lookup != null) lookup
         else {
             val newSymbol = block()
-            put(name, newSymbol)
+            set(name, newSymbol)
             newSymbol
         }
 

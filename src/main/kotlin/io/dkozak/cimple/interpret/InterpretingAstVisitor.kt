@@ -1,4 +1,10 @@
-package io.dkozak.cimple
+package io.dkozak.cimple.interpret
+
+import io.dkozak.cimple.SymbolTable
+import io.dkozak.cimple.VariableSymbol
+import io.dkozak.cimple.ast.*
+import io.dkozak.cimple.typesystem.IntegerValue
+import io.dkozak.cimple.typesystem.Value
 
 class InterpretingAstVisitor(
         private val symbolTable: SymbolTable
@@ -55,7 +61,7 @@ class InterpretingAstVisitor(
 
     override fun visitVariableAssignment(variableAssignment: VariableAssignment): Value? {
         val newValue = variableAssignment.expression.accept(this)!!
-        val variableSymbol = symbolTable.computeIfAbsent(variableAssignment.variable.name) { VariableSymbol(variableAssignment.variable) } as VariableSymbol
+        val variableSymbol = symbolTable.computeIfAbsent(variableAssignment.variable.name) { VariableSymbol(variableAssignment.variable.name) } as VariableSymbol
         variableSymbol.value = newValue
         return null
     }
@@ -66,13 +72,13 @@ class InterpretingAstVisitor(
     }
 
     override fun visitInputStatement(inputStatement: InputStatement): Value? {
-        print("${inputStatement.variable.name}:")
+        print("${inputStatement.name}:")
         val input = readLine()
         if (input == null || input.isEmpty()) {
             throw IllegalArgumentException("No input value read")
         }
         try {
-            val variableSymbol = symbolTable.computeIfAbsent(inputStatement.variable.name) { VariableSymbol(inputStatement.variable) } as VariableSymbol
+            val variableSymbol = symbolTable.computeIfAbsent(inputStatement.name) { VariableSymbol(inputStatement.name) } as VariableSymbol
             variableSymbol.value = IntegerValue(input.toInt())
         } catch (ex: NumberFormatException) {
             throw IllegalArgumentException("Input ${input} is not an integer")
@@ -97,7 +103,7 @@ class InterpretingAstVisitor(
 
     override fun visitForLoop(forLoop: ForLoop): Value? {
         symbolTable.push()
-        val variableSymbol = symbolTable.computeIfAbsent(forLoop.setup.variable.name) { VariableSymbol(forLoop.setup.variable) } as VariableSymbol
+        val variableSymbol = symbolTable.computeIfAbsent(forLoop.setup.variable.name) { VariableSymbol(forLoop.setup.variable.name) } as VariableSymbol
         variableSymbol.value = forLoop.setup.expression.accept(this)!!
 
         var retVal: Value? = null
@@ -106,7 +112,7 @@ class InterpretingAstVisitor(
             retVal = interpretStatements(forLoop.statements)
             if (retVal != null)
                 break
-            val incrementSymbol = symbolTable.computeIfAbsent(forLoop.increment.variable.name) { VariableSymbol(forLoop.increment.variable) } as VariableSymbol
+            val incrementSymbol = symbolTable.computeIfAbsent(forLoop.increment.variable.name) { VariableSymbol(forLoop.increment.variable.name) } as VariableSymbol
             incrementSymbol.value = forLoop.increment.expression.accept(this)!!
         }
         symbolTable.pop()
@@ -125,12 +131,24 @@ class InterpretingAstVisitor(
         for (i in 0 until arguments.size) {
             val parameter = functionCall.function.formalParameters[i]
             val argument = arguments[i]
-            symbolTable.put(parameter.name, VariableSymbol(parameter, argument))
+            symbolTable[parameter.name] = VariableSymbol(parameter.name, argument)
         }
-        val retVal = interpretStatements(functionCall.function.body!!)
+        val retVal = interpretStatements(functionCall.function.body)
 
         symbolTable.pop()
 
         return retVal
+    }
+
+    override fun visitUnresolvedVariableReference(unresolvedVariableReference: UnresolvedVariableReference): Value? {
+        throw UnsupportedOperationException("Should never be called")
+    }
+
+    override fun visitParameterDefinition(parameterDefinition: ParameterDefinition): Value? {
+        throw UnsupportedOperationException("Should never be called")
+    }
+
+    override fun visitUnresolvedFunctionCall(unresolvedFunctionCall: UnresolvedFunctionCall): Value? {
+        throw UnsupportedOperationException("Should never be called")
     }
 }

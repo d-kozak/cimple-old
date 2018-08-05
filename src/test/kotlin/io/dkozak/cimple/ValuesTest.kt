@@ -1,5 +1,6 @@
 package io.dkozak.cimple
 
+import io.dkozak.cimple.typesystem.DoubleValue
 import org.junit.Test
 
 class ValuesTest {
