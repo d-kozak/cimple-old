@@ -10,6 +10,7 @@ interface AstListener {
     fun enterStringLiteral(stringLiteral: StringLiteral)
     fun enterBinaryExpression(binaryExpression: BinaryExpression)
     fun enterUnaryExpression(unaryExpression: UnaryExpression)
+    fun enterVariableDefinition(variableDefinition: VariableDefinition)
     fun enterVariableAssignment(variableAssignment: VariableAssignment)
     fun enterPrintStatement(printStatement: PrintStatement)
     fun enterInputStatement(inputStatement: InputStatement)

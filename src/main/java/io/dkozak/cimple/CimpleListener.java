@@ -220,6 +220,20 @@ public interface CimpleListener extends ParseTreeListener {
     void exitVariableAssignment(CimpleParser.VariableAssignmentContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link CimpleParser#variableDefinition}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterVariableDefinition(CimpleParser.VariableDefinitionContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#variableDefinition}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitVariableDefinition(CimpleParser.VariableDefinitionContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link CimpleParser#printStatement}.
      *
      * @param ctx the parse tree
@@ -306,6 +320,20 @@ public interface CimpleListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     void exitParameters(CimpleParser.ParametersContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link CimpleParser#parameter}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterParameter(CimpleParser.ParameterContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link CimpleParser#parameter}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitParameter(CimpleParser.ParameterContext ctx);
 
     /**
      * Enter a parse tree produced by {@link CimpleParser#returnStatement}.

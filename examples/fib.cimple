@@ -1,6 +1,6 @@
 
 
-fn fib(i){
+fn fib(int i) : int{
     if(i < 2){
         return 1;
     } else {
@@ -8,9 +8,9 @@ fn fib(i){
     }
 }
 
-input i;
+input int i;
 
-for(j = 0; j < i ; j = j+1){
+for(int j = 0; j < i ; j = j+1){
     res = fib(j);
     print res;
 }

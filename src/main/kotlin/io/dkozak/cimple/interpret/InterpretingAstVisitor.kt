@@ -59,9 +59,16 @@ class InterpretingAstVisitor(
         else -> throw IllegalArgumentException("Unknown type of operation ${unaryExpression.operation}")
     }
 
+    override fun visitVariableDefinition(variableDefinition: VariableDefinition): Value? {
+        val newValue = variableDefinition.expression.accept(this)!!
+        val variableSymbol = VariableSymbol(variableDefinition.variable.name, newValue)
+        symbolTable[variableDefinition.variable.name] = variableSymbol
+        return null
+    }
+
     override fun visitVariableAssignment(variableAssignment: VariableAssignment): Value? {
         val newValue = variableAssignment.expression.accept(this)!!
-        val variableSymbol = symbolTable.computeIfAbsent(variableAssignment.variable.name) { VariableSymbol(variableAssignment.variable.name) } as VariableSymbol
+        val variableSymbol = symbolTable[variableAssignment.variable.name] as VariableSymbol
         variableSymbol.value = newValue
         return null
     }
@@ -103,8 +110,11 @@ class InterpretingAstVisitor(
 
     override fun visitForLoop(forLoop: ForLoop): Value? {
         symbolTable.push()
-        val variableSymbol = symbolTable.computeIfAbsent(forLoop.setup.variable.name) { VariableSymbol(forLoop.setup.variable.name) } as VariableSymbol
-        variableSymbol.value = forLoop.setup.expression.accept(this)!!
+
+        val newValue = forLoop.setup.expression.accept(this)!!
+        val variableSymbol = VariableSymbol(forLoop.setup.variable.name, newValue)
+
+        symbolTable[forLoop.setup.variable.name] = variableSymbol
 
         var retVal: Value? = null
 

@@ -269,6 +269,24 @@ public class CimpleBaseListener implements CimpleListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterVariableDefinition(CimpleParser.VariableDefinitionContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitVariableDefinition(CimpleParser.VariableDefinitionContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterPrintStatement(CimpleParser.PrintStatementContext ctx) {
     }
 
@@ -369,6 +387,24 @@ public class CimpleBaseListener implements CimpleListener {
      */
     @Override
     public void exitParameters(CimpleParser.ParametersContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterParameter(CimpleParser.ParameterContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitParameter(CimpleParser.ParameterContext ctx) {
     }
 
     /**

@@ -6,6 +6,7 @@ program
 
 statement
     : variableAssignment SEMICOLON
+    | variableDefinition SEMICOLON
     | inputStatement SEMICOLON
     | printStatement SEMICOLON
     | ifStatement
@@ -48,11 +49,15 @@ arguments
     ;
 
 forLoop
-    : FOR LPAREN setup=variableAssignment SEMICOLON expression SEMICOLON increment=variableAssignment RPAREN block
+    : FOR LPAREN setup=variableDefinition SEMICOLON expression SEMICOLON increment=variableAssignment RPAREN block
     ;
 
 variableAssignment
     : ID ASSIGN expression
+    ;
+
+variableDefinition
+    : type=ID name=ID ASSIGN expression
     ;
 
 printStatement
@@ -60,7 +65,7 @@ printStatement
     ;
 
 inputStatement
-    : INPUT ID
+    : INPUT type=ID name=ID
     ;
 
 ifStatement
@@ -69,13 +74,16 @@ ifStatement
     ;
 
 functionDefinition
-    : FN ID LPAREN parameters? RPAREN block
+    : FN name=ID LPAREN parameters? RPAREN (COLON type=ID)? block
     ;
 
 parameters
-    : ID (COMMA ID)*
+    : parameter (COMMA parameter)*
     ;
 
+parameter
+    : type=ID name=ID
+    ;
 
 returnStatement
     : RETURN expression
@@ -107,6 +115,8 @@ PRINT : 'print';
 INPUT : 'input';
 
 FN : 'fn';
+
+COLON: ':';
 
 FOR : 'for';
 IF : 'if';

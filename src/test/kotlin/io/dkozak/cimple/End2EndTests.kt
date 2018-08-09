@@ -60,7 +60,7 @@ class End2EndTests {
     @Test
     fun `functionCall use one input param`() {
         val input = """
-            fn foo(x){
+            fn foo(int x){
                 print x;
             }
             foo(42);
@@ -77,14 +77,14 @@ class End2EndTests {
     @Test
     fun `functionCall use one input param and condition`() {
         val input = """
-            fn foo(x){
+            fn foo(int x){
                 if(x > 9){
                     print 42;
                 } else {
                     print 21;
                 }
             }
-            a = 10;
+            int a = 10;
             foo(a);
         """.trimIndent()
 
@@ -99,7 +99,7 @@ class End2EndTests {
     @Test
     fun `functionCall with return value, no arguments`() {
         val input = """
-            fn foo(){
+            fn foo() : int {
                 return -1;
             }
             print foo();
@@ -117,9 +117,9 @@ class End2EndTests {
     @Test
     fun `functionCall with one argument and inner cycle`() {
         val input = """
-            fn sum(limit){
-                a = 0;
-                for(i = 1 ; i <= limit ; i = i+1){
+            fn sum(int limit): int{
+                int a = 0;
+                for(int i = 1 ; i <= limit ; i = i+1){
                     a = a + i;
                 }
                 return a;
@@ -138,7 +138,7 @@ class End2EndTests {
     @Test
     fun `functionCall with three arguments and if`() {
         val input = """
-            fn plusOrMult(cond,x,y){
+            fn plusOrMult(int cond, int x, int y) : int{
                 if(cond){
                     return x + y;
                 } else {
@@ -160,7 +160,7 @@ class End2EndTests {
     @Test
     fun assignAndPrint() {
         val input = """
-            a = 10;
+            int a = 10;
             print a;
         """.trimIndent()
 
@@ -175,8 +175,8 @@ class End2EndTests {
     @Test
     fun `Because 42 is always the answer`() {
         val input = """
-            a = 10;
-            b = 15 + 17;
+            int a = 10;
+            int b = 15 + 17;
             print a + b;
         """.trimIndent()
         val parseTree = parse(input)
@@ -189,8 +189,8 @@ class End2EndTests {
     @Test
     fun logicalExpression() {
         val input = """
-            a = 10;
-            b = 15;
+            int a = 10;
+            int b = 15;
             print a > b;
         """.trimIndent()
         val parseTree = parse(input)
@@ -204,7 +204,7 @@ class End2EndTests {
     @Test
     fun ifStatement() {
         val input = """
-            a = 10;
+            int a = 10;
             if(a >= 5){
                 print a;
             }
@@ -220,7 +220,7 @@ class End2EndTests {
     @Test
     fun ifStatementFalse() {
         val input = """
-            a = 10;
+            int a = 10;
             if(a >= 50){
                 print a;
             }
@@ -236,7 +236,7 @@ class End2EndTests {
     @Test
     fun ifElseStatement() {
         val input = """
-            a = 10;
+            int a = 10;
             if(a >= 5){
                 print a;
             } else {
@@ -254,7 +254,7 @@ class End2EndTests {
     @Test
     fun ifElseStatementFalse() {
         val input = """
-            a = 10;
+            int a = 10;
             if(a >= 50){
                 print a;
             } else {
@@ -272,7 +272,7 @@ class End2EndTests {
     @Test
     fun forLoop() {
         val input = """
-            for(i = 0; i < 10 ; i = i + 1){
+            for(int i = 0; i < 10 ; i = i + 1){
                 print i;
             }
         """.trimIndent()
@@ -300,7 +300,7 @@ class End2EndTests {
     @Test(expected = IllegalArgumentException::class)
     fun `invalidForLoop missing semicolon between setup and testCondition`() {
         val input = """
-            for(i = 0 i < 10 ; i = i + 1){
+            for(int i = 0 i < 10 ; i = i + 1){
                 print i;
             }
         """.trimIndent()
@@ -320,7 +320,7 @@ class End2EndTests {
     @Test(expected = StackOverflowError::class)
     fun stackOverflow() {
         val input = """
-            fn foo(x){
+            fn foo(int x) {
                 print x;
                 foo(x + 1);
             }

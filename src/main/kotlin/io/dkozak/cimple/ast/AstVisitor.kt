@@ -11,6 +11,7 @@ interface AstVisitor<T> {
     fun visitStringLiteral(stringLiteral: StringLiteral): T
     fun visitBinaryExpression(binaryExpression: BinaryExpression): T
     fun visitUnaryExpression(unaryExpression: UnaryExpression): T
+    fun visitVariableDefinition(variableDefinition: VariableDefinition): T
     fun visitVariableAssignment(variableAssignment: VariableAssignment): T
     fun visitPrintStatement(printStatement: PrintStatement): T
     fun visitInputStatement(inputStatement: InputStatement): T
@@ -27,6 +28,7 @@ interface AstVisitor<T> {
 
     fun visitNodes(nodes: List<AstNode>) = nodes.map(this::visit)
     fun visit(node: AstNode) = node.accept(this)
+
 
 }
 

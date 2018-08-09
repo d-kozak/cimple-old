@@ -60,6 +60,12 @@ class AstWalker(
                 expression.accept(this@AstWalker)
             }
 
+    override fun visitVariableDefinition(variableDefinition: VariableDefinition): AstNode =
+            variableDefinition.apply {
+                listener.enterVariableDefinition(variableDefinition)
+                variable.accept(this@AstWalker)
+                expression.accept(this@AstWalker)
+            }
 
     override fun visitPrintStatement(printStatement: PrintStatement): AstNode =
             printStatement.apply {

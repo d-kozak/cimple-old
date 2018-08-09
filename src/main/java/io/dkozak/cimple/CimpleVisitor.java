@@ -131,6 +131,14 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
     T visitVariableAssignment(CimpleParser.VariableAssignmentContext ctx);
 
     /**
+     * Visit a parse tree produced by {@link CimpleParser#variableDefinition}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitVariableDefinition(CimpleParser.VariableDefinitionContext ctx);
+
+    /**
      * Visit a parse tree produced by {@link CimpleParser#printStatement}.
      *
      * @param ctx the parse tree
@@ -179,6 +187,14 @@ public interface CimpleVisitor<T> extends ParseTreeVisitor<T> {
      * @return the visitor result
      */
     T visitParameters(CimpleParser.ParametersContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link CimpleParser#parameter}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitParameter(CimpleParser.ParameterContext ctx);
 
     /**
      * Visit a parse tree produced by {@link CimpleParser#returnStatement}.

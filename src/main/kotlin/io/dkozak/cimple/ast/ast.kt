@@ -90,6 +90,13 @@ enum class Operation {
     MOD
 }
 
+data class VariableDefinition(
+        val variable: VariableReference,
+        val expression: Expression
+) : AstNode {
+    override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitVariableDefinition(this)
+}
+
 data class VariableAssignment(
         val variable: VariableReference,
         val expression: Expression
@@ -126,7 +133,7 @@ data class ReturnStatement(
 }
 
 data class ForLoop(
-        val setup: VariableAssignment,
+        val setup: VariableDefinition,
         val testExpression: Expression,
         val statements: List<AstNode>,
         val increment: VariableAssignment

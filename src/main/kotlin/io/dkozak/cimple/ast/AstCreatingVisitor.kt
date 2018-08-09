@@ -18,9 +18,9 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
     }
 
     override fun visitFunctionDefinition(ctx: CimpleParser.FunctionDefinitionContext): AstNode {
-        val name = ctx.ID().text
+        val name = ctx.name.text
         val params = if (ctx.parameters() != null)
-            ctx.parameters().ID().map { ParameterDefinition(it.text, Type.INT) }
+            ctx.parameters().parameter().map { ParameterDefinition(it.name.text, Type.INT) }
         else emptyList()
 
         val statements = ctx.block().statement().map {
@@ -46,8 +46,11 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
             VariableAssignment(VariableReference(ctx.ID().text), createExpression(ctx.expression()))
 
 
+    override fun visitVariableDefinition(ctx: CimpleParser.VariableDefinitionContext): AstNode =
+            VariableDefinition(VariableReference(ctx.name.text), createExpression(ctx.expression()))
+
     override fun visitInputStatement(ctx: CimpleParser.InputStatementContext): AstNode =
-            InputStatement(ctx.ID().text, Type.INT)
+            InputStatement(ctx.name.text, Type.INT)
 
     override fun visitPrintStatement(ctx: CimpleParser.PrintStatementContext): AstNode = PrintStatement(
             createExpression(ctx.expression())
@@ -68,7 +71,7 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
     }
 
     override fun visitForLoop(ctx: CimpleParser.ForLoopContext): AstNode {
-        val setup = ctx.setup.accept(this) as VariableAssignment
+        val setup = ctx.setup.accept(this) as VariableDefinition
         val testExpression = createExpression(ctx.expression())
         val increment = ctx.increment.accept(this) as VariableAssignment
         val statements = ctx.block().statement().map { it.accept(this) }

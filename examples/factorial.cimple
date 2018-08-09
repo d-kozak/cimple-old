@@ -1,6 +1,6 @@
 
 
-fn fac(n){
+fn fac(int n) : int {
    if(n == 0){
     return 1;
    }
@@ -8,8 +8,8 @@ fn fac(n){
 }
 
 
-input max;
+input int max;
 
-for(i = 0 ; i <= max ; i = i + 1){
+for(int i = 0 ; i <= max ; i = i + 1){
     print fac(i);
 }

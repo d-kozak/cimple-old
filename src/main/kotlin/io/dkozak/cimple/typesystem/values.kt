@@ -6,6 +6,7 @@ enum class Type {
     DOUBLE,
     STRING,
     UNKNOWN,
+    VOID,
     INVALID
 }
 

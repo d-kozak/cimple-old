@@ -40,6 +40,10 @@ open class BaseAstListener : AstListener {
         
     }
 
+    override fun enterVariableDefinition(variableDefinition: VariableDefinition) {
+
+    }
+
     override fun enterPrintStatement(printStatement: PrintStatement) {
         
     }

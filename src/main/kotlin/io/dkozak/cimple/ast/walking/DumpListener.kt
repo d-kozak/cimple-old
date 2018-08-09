@@ -36,6 +36,10 @@ class DumpListener : BaseAstListener() {
         println(variableAssignment)
     }
 
+    override fun enterVariableDefinition(variableDefinition: VariableDefinition) {
+        println(variableDefinition)
+    }
+
     override fun enterPrintStatement(printStatement: PrintStatement) {
         println(printStatement)
     }

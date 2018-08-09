@@ -1,2 +1,2 @@
-a = 42;
+int a = 42;
 print a;
