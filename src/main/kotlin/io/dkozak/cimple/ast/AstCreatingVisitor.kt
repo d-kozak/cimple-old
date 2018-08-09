@@ -26,7 +26,19 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
         val statements = ctx.block().statement().map {
             it.accept(this)
         }
-        val functionDefinition = FunctionDefinition(name, params, statements)
+
+        val returnType = when (ctx.type?.text) {
+            "int" -> Type.INT
+            "double" -> Type.DOUBLE
+            "string" -> Type.STRING
+            null -> null
+            else -> {
+                errors.add("Function $name has invalid return type ${ctx.type?.text}")
+                Type.INVALID
+            }
+        }
+
+        val functionDefinition = FunctionDefinition(name, params, statements, returnType)
         symbolTable[name] = functionDefinition
 
         return functionDefinition
@@ -46,11 +58,32 @@ class AstCreatingVisitor : CimpleBaseVisitor<AstNode>() {
             VariableAssignment(VariableReference(ctx.ID().text), createExpression(ctx.expression()))
 
 
-    override fun visitVariableDefinition(ctx: CimpleParser.VariableDefinitionContext): AstNode =
-            VariableDefinition(VariableReference(ctx.name.text), createExpression(ctx.expression()))
+    override fun visitVariableDefinition(ctx: CimpleParser.VariableDefinitionContext): AstNode {
+        val type = when (ctx.type.text) {
+            "int" -> Type.INT
+            "double" -> Type.DOUBLE
+            "string" -> Type.STRING
+            else -> {
+                errors.add("Variable ${ctx.name.text} has invalid type ${ctx.type.text}")
+                Type.INVALID
+            }
+        }
+        return VariableDefinition(VariableReference(ctx.name.text), createExpression(ctx.expression()), type)
+    }
 
-    override fun visitInputStatement(ctx: CimpleParser.InputStatementContext): AstNode =
-            InputStatement(ctx.name.text, Type.INT)
+    override fun visitInputStatement(ctx: CimpleParser.InputStatementContext): AstNode {
+        val type = when (ctx.type.text) {
+            "int" -> Type.INT
+            "double" -> Type.DOUBLE
+            "string" -> Type.STRING
+            else -> {
+                errors.add("Input ${ctx.name.text} has invalid type ${ctx.type.text}")
+                Type.INVALID
+            }
+        }
+        return InputStatement(ctx.name.text, type)
+    }
+
 
     override fun visitPrintStatement(ctx: CimpleParser.PrintStatementContext): AstNode = PrintStatement(
             createExpression(ctx.expression())

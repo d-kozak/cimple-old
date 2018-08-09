@@ -9,7 +9,7 @@ data class Program(val statements: List<AstNode>) : AstNode {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitProgram(this)
 }
 
-abstract class Expression(var type: Type = Type.UNKNOWN) : AstNode
+abstract class Expression(val type: Type = Type.UNKNOWN) : AstNode
 
 data class ParameterDefinition(
         val name: String,
@@ -92,7 +92,8 @@ enum class Operation {
 
 data class VariableDefinition(
         val variable: VariableReference,
-        val expression: Expression
+        val expression: Expression,
+        val type: Type
 ) : AstNode {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitVariableDefinition(this)
 }
@@ -145,7 +146,8 @@ data class ForLoop(
 data class FunctionDefinition(
         val name: String,
         var formalParameters: List<ParameterDefinition>,
-        var body: List<AstNode>
+        var body: List<AstNode>,
+        val returnType: Type?
 ) : AstNode, Symbol {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitFunctionDefinition(this)
 }

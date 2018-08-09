@@ -39,7 +39,8 @@ open class BaseAstRewritingVisitor(
         symbolTable[variableDefinition.variable.name] = VariableSymbol(variableDefinition.variable.name)
         return VariableDefinition(
                 visit(variableDefinition.variable) as VariableReference,
-                visit(variableDefinition.expression) as Expression
+                visit(variableDefinition.expression) as Expression,
+                variableDefinition.type
         )
     }
 
@@ -99,7 +100,8 @@ open class BaseAstRewritingVisitor(
         return FunctionDefinition(
                 functionDefinition.name,
                 parameters,
-                body
+                body,
+                functionDefinition.returnType
         ).also { symbolTable[functionDefinition.name] = it }
     }
 
