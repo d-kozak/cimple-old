@@ -1,12 +1,14 @@
 package io.dkozak.cimple
 
 import io.dkozak.cimple.typesystem.IntegerValue
+import io.dkozak.cimple.typesystem.Type
 import io.dkozak.cimple.typesystem.Value
 
 interface Symbol
 
 data class VariableSymbol(
         val variableName: String,
+        val type: Type,
         var value: Value = IntegerValue(0)
 ) : Symbol
 

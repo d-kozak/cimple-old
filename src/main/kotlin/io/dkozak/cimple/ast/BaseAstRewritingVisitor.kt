@@ -36,7 +36,7 @@ open class BaseAstRewritingVisitor(
             )
 
     override fun visitVariableDefinition(variableDefinition: VariableDefinition): AstNode {
-        symbolTable[variableDefinition.variable.name] = VariableSymbol(variableDefinition.variable.name)
+        symbolTable[variableDefinition.variable.name] = VariableSymbol(variableDefinition.variable.name, variableDefinition.type)
         return VariableDefinition(
                 visit(variableDefinition.variable) as VariableReference,
                 visit(variableDefinition.expression) as Expression,
@@ -93,7 +93,7 @@ open class BaseAstRewritingVisitor(
         symbolTable.push()
         val parameters = visitNodes(functionDefinition.formalParameters) as List<ParameterDefinition>
         for (parameter in parameters) {
-            symbolTable[parameter.name] = VariableSymbol(parameter.name)
+            symbolTable[parameter.name] = VariableSymbol(parameter.name, parameter.type)
         }
         val body = visitNodes(functionDefinition.body)
         symbolTable.pop()

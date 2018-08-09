@@ -9,7 +9,7 @@ data class Program(val statements: List<AstNode>) : AstNode {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitProgram(this)
 }
 
-abstract class Expression(val type: Type = Type.UNKNOWN) : AstNode
+abstract class Expression(var type: Type = Type.UNKNOWN) : AstNode
 
 data class ParameterDefinition(
         val name: String,
@@ -33,19 +33,19 @@ data class UnresolvedVariableReference(
 
 data class IntegerLiteral(
         val value: Int
-) : Expression() {
+) : Expression(Type.INT) {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitIntegerLiteral(this)
 }
 
 data class DoubleLiteral(
         val value: Double
-) : Expression() {
+) : Expression(Type.DOUBLE) {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitDoubleLiteral(this)
 }
 
 data class StringLiteral(
         val value: String
-) : Expression() {
+) : Expression(Type.STRING) {
     override fun <T> accept(visitor: AstVisitor<T>): T = visitor.visitStringLiteral(this)
 }
 

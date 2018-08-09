@@ -17,7 +17,11 @@ class ReferenceResolvingVisitor(
         return if (function != null) {
             if (function is FunctionDefinition) {
                 if (function.formalParameters.size == unresolvedFunctionCall.arguments.size) {
-                    FunctionCall(function, visitNodes(unresolvedFunctionCall.arguments) as List<Expression>)
+                    val functionCall = FunctionCall(function, visitNodes(unresolvedFunctionCall.arguments) as List<Expression>)
+                    if (function.returnType != null) {
+                        functionCall.type = function.returnType
+                    }
+                    functionCall
                 } else {
                     errors.add("Wrong number of arguments in function call ${unresolvedFunctionCall.functionName}")
                     unresolvedFunctionCall
@@ -36,7 +40,9 @@ class ReferenceResolvingVisitor(
         val symbol = symbolTable[unresolvedVariableReference.name]
         return if (symbol != null) {
             if (symbol is VariableSymbol) {
-                VariableReference(symbol.variableName)
+                val variableReference = VariableReference(symbol.variableName)
+                variableReference.type = symbol.type
+                variableReference
             } else {
                 errors.add("Reference ${unresolvedVariableReference.name} is not a variable")
                 unresolvedVariableReference
@@ -53,7 +59,7 @@ class ReferenceResolvingVisitor(
         symbolTable.push()
         functionDefinition.formalParameters = visitNodes(functionDefinition.formalParameters) as List<ParameterDefinition>
         for (parameter in functionDefinition.formalParameters) {
-            symbolTable[parameter.name] = VariableSymbol(parameter.name)
+            symbolTable[parameter.name] = VariableSymbol(parameter.name, parameter.type)
         }
         functionDefinition.body = visitNodes(functionDefinition.body)
         symbolTable.pop()
