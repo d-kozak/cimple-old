@@ -61,7 +61,7 @@ class InterpretingAstVisitor(
 
     override fun visitVariableDefinition(variableDefinition: VariableDefinition): Value? {
         val newValue = variableDefinition.expression.accept(this)!!
-        val variableSymbol = VariableSymbol(variableDefinition.variable.name, newValue)
+        val variableSymbol = VariableSymbol(variableDefinition.variable.name, variableDefinition.type, newValue)
         symbolTable[variableDefinition.variable.name] = variableSymbol
         return null
     }
@@ -85,7 +85,7 @@ class InterpretingAstVisitor(
             throw IllegalArgumentException("No input value read")
         }
         try {
-            val variableSymbol = symbolTable.computeIfAbsent(inputStatement.name) { VariableSymbol(inputStatement.name) } as VariableSymbol
+            val variableSymbol = symbolTable.computeIfAbsent(inputStatement.name) { VariableSymbol(inputStatement.name, inputStatement.type) } as VariableSymbol
             variableSymbol.value = IntegerValue(input.toInt())
         } catch (ex: NumberFormatException) {
             throw IllegalArgumentException("Input ${input} is not an integer")
@@ -112,7 +112,7 @@ class InterpretingAstVisitor(
         symbolTable.push()
 
         val newValue = forLoop.setup.expression.accept(this)!!
-        val variableSymbol = VariableSymbol(forLoop.setup.variable.name, newValue)
+        val variableSymbol = VariableSymbol(forLoop.setup.variable.name, forLoop.setup.type, newValue)
 
         symbolTable[forLoop.setup.variable.name] = variableSymbol
 
@@ -122,7 +122,7 @@ class InterpretingAstVisitor(
             retVal = interpretStatements(forLoop.statements)
             if (retVal != null)
                 break
-            val incrementSymbol = symbolTable.computeIfAbsent(forLoop.increment.variable.name) { VariableSymbol(forLoop.increment.variable.name) } as VariableSymbol
+            val incrementSymbol = symbolTable.computeIfAbsent(forLoop.increment.variable.name) { VariableSymbol(forLoop.increment.variable.name, forLoop.increment.variable.type) } as VariableSymbol
             incrementSymbol.value = forLoop.increment.expression.accept(this)!!
         }
         symbolTable.pop()
@@ -141,7 +141,7 @@ class InterpretingAstVisitor(
         for (i in 0 until arguments.size) {
             val parameter = functionCall.function.formalParameters[i]
             val argument = arguments[i]
-            symbolTable[parameter.name] = VariableSymbol(parameter.name, argument)
+            symbolTable[parameter.name] = VariableSymbol(parameter.name, parameter.type, argument)
         }
         val retVal = interpretStatements(functionCall.function.body)
 

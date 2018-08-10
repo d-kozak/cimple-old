@@ -10,8 +10,6 @@ class ReferenceResolvingVisitor(
         symbolTable
 ) {
 
-    val errors = mutableListOf<String>()
-
     override fun visitUnresolvedFunctionCall(unresolvedFunctionCall: UnresolvedFunctionCall): AstNode {
         val function = symbolTable[unresolvedFunctionCall.functionName]
         return if (function != null) {

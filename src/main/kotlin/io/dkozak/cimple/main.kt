@@ -4,6 +4,7 @@ import io.dkozak.cimple.ast.AstCreatingVisitor
 import io.dkozak.cimple.ast.Program
 import io.dkozak.cimple.ast.ReferenceResolvingVisitor
 import io.dkozak.cimple.interpret.InterpretingAstVisitor
+import io.dkozak.cimple.typesystem.TypePromotingVisitor
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.tree.ParseTree
 import java.io.File
@@ -42,7 +43,7 @@ fun parse(input: String): CimpleParser.ProgramContext {
 
 fun toAst(parseTree: ParseTree): Pair<Program, SymbolTable> {
     val astCreator = AstCreatingVisitor()
-    val ast = astCreator.visit(parseTree) as Program
+    var ast = astCreator.visit(parseTree) as Program
     val symbolTable = astCreator.symbolTable
 
     if (astCreator.errors.isNotEmpty()) {
@@ -56,18 +57,20 @@ fun toAst(parseTree: ParseTree): Pair<Program, SymbolTable> {
     // only function symbols should be passed into the interpreter
     symbolTable.forgetVariables()
 
-    val referenceResolver = ReferenceResolvingVisitor(symbolTable)
+    val visitors = listOf(ReferenceResolvingVisitor(symbolTable), TypePromotingVisitor(symbolTable))
 
-    val newAst = ast.accept(referenceResolver) as Program
+    for (visitor in visitors) {
+        ast = visitor.visit(ast) as Program
 
-    if (referenceResolver.errors.isNotEmpty()) {
-        for (msg in referenceResolver.errors) {
-            System.err.println(msg)
+        if (visitor.errors.isNotEmpty()) {
+            for (msg in visitor.errors) {
+                System.err.println(msg)
+            }
+            throw IllegalArgumentException()
         }
-        throw IllegalArgumentException()
     }
 
-    return newAst to symbolTable
+    return ast to symbolTable
 }
 
 

@@ -4,7 +4,8 @@ import io.dkozak.cimple.SymbolTable
 import io.dkozak.cimple.VariableSymbol
 
 open class BaseAstRewritingVisitor(
-        val symbolTable: SymbolTable
+        val symbolTable: SymbolTable,
+        val errors: MutableList<String> = mutableListOf()
 ) : AstVisitor<AstNode> {
 
     override fun visitProgram(program: Program): AstNode =
@@ -89,7 +90,6 @@ open class BaseAstRewritingVisitor(
     }
 
     override fun visitFunctionDefinition(functionDefinition: FunctionDefinition): AstNode {
-
         symbolTable.push()
         val parameters = visitNodes(functionDefinition.formalParameters) as List<ParameterDefinition>
         for (parameter in parameters) {
@@ -107,11 +107,14 @@ open class BaseAstRewritingVisitor(
 
     override fun visitParameterDefinition(parameterDefinition: ParameterDefinition): AstNode = parameterDefinition
 
-    override fun visitFunctionCall(functionCall: FunctionCall): AstNode =
-            FunctionCall(
-                    functionCall.function,
-                    visitNodes(functionCall.arguments) as List<Expression>
-            )
+    override fun visitFunctionCall(functionCall: FunctionCall): AstNode {
+        val result = FunctionCall(
+                functionCall.function,
+                visitNodes(functionCall.arguments) as List<Expression>
+        )
+        result.type = functionCall.type
+        return result
+    }
 
     override fun visitUnresolvedFunctionCall(unresolvedFunctionCall: UnresolvedFunctionCall): AstNode =
             UnresolvedFunctionCall(

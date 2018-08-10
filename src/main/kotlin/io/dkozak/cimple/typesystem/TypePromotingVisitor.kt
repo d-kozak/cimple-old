@@ -4,7 +4,6 @@ import io.dkozak.cimple.SymbolTable
 import io.dkozak.cimple.ast.*
 
 class TypePromotingVisitor(
-        private val errors: MutableList<String>,
         symbolTable: SymbolTable
 ) : BaseAstRewritingVisitor(symbolTable) {
 
@@ -13,6 +12,9 @@ class TypePromotingVisitor(
         val right = visit(binaryExpression.right) as Expression
 
         val type = computeType(left.type, right.type)
+        if (type == Type.INVALID) {
+            errors.add("Type eror in " + binaryExpression)
+        }
 
         val result = BinaryExpression(binaryExpression.operation, left, right)
         result.type = type
@@ -30,15 +32,13 @@ class TypePromotingVisitor(
     fun computeType(left: Type, right: Type): Type =
             when {
                 left == Type.INT && right == Type.INT -> Type.INT
-                left == Type.DOUBLE && right == Type.INT -> Type.DOUBLE
-                left == Type.INT && right == Type.DOUBLE -> Type.DOUBLE
+// TODO implicit type casts
+//                left == Type.DOUBLE && right == Type.INT -> Type.DOUBLE
+//                left == Type.INT && right == Type.DOUBLE -> Type.DOUBLE
                 left == Type.DOUBLE && right == Type.DOUBLE -> Type.DOUBLE
                 left == Type.STRING && right == Type.STRING -> Type.STRING
                 left == Type.INVALID || right == Type.INVALID -> Type.INVALID
-                else -> {
-                    errors.add("Invalid type conversion")
-                    Type.INVALID
-                }
+                else -> Type.INVALID
             }
 }
 
