@@ -120,7 +120,7 @@ data class InputStatement(
 }
 
 data class IfStatement(
-        val expression: Expression,
+        val condition: Expression,
         val thenStatements: List<AstNode>,
         val elseStatements: List<AstNode>
 ) : AstNode {

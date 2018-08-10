@@ -81,7 +81,7 @@ class AstWalker(
     override fun visitIfStatement(ifStatement: IfStatement): AstNode =
             ifStatement.apply {
                 listener.enterIfStatement(this)
-                expression.accept(this@AstWalker)
+                condition.accept(this@AstWalker)
                 visitNodes(thenStatements)
                 visitNodes(elseStatements)
                 listener.exitIfStatement(this)
