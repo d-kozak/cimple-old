@@ -59,7 +59,7 @@ open class BaseAstRewritingVisitor(
     override fun visitInputStatement(inputStatement: InputStatement): AstNode = inputStatement
 
     override fun visitIfStatement(ifStatement: IfStatement): AstNode {
-        val condition = visit(ifStatement.expression) as Expression
+        val condition = visit(ifStatement.condition) as Expression
         symbolTable.push()
         val thenStatements = visitNodes(ifStatement.thenStatements)
         symbolTable.pop()

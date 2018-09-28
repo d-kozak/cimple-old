@@ -94,7 +94,7 @@ class InterpretingAstVisitor(
     }
 
     override fun visitIfStatement(ifStatement: IfStatement): Value? {
-        val condition = ifStatement.expression.accept(this)!!
+        val condition = ifStatement.condition.accept(this)!!
         val retVal: Value?
         symbolTable.push()
         if (condition.isTrue()) {

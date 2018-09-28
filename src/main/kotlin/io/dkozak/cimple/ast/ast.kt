@@ -62,7 +62,7 @@ data class UnresolvedBinaryExpression(
         val left: Expression,
         val right: Expression
 ) : Expression() {
-    override fun <T> accept(visitor: AstVisitor<T>): T = throw IllegalStateException("Never meant for visiting")
+    override fun <T> accept(visitor: AstVisitor<T>): T = throw UnsupportedOperationException("Never meant for visiting")
 
 }
 
@@ -120,7 +120,7 @@ data class InputStatement(
 }
 
 data class IfStatement(
-        val expression: Expression,
+        val condition: Expression,
         val thenStatements: List<AstNode>,
         val elseStatements: List<AstNode>
 ) : AstNode {
