@@ -5,7 +5,7 @@ import io.dkozak.cimple.VariableSymbol
 
 open class BaseAstRewritingVisitor(
         val symbolTable: SymbolTable,
-        val errors: MutableList<String> = mutableListOf()
+        val errors: MutableList<VisitorError> = mutableListOf()
 ) : AstVisitor<AstNode> {
 
     override fun visitProgram(program: Program): AstNode =

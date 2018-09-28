@@ -21,15 +21,15 @@ class ReferenceResolvingVisitor(
                     }
                     functionCall
                 } else {
-                    errors.add("Wrong number of arguments in function call ${unresolvedFunctionCall.functionName}")
+                    errors.add(ReferenceResolvingError("Wrong number of arguments in function call ${unresolvedFunctionCall.functionName}"))
                     unresolvedFunctionCall
                 }
             } else {
-                errors.add("Reference ${unresolvedFunctionCall.functionName} is not a function")
+                errors.add(ReferenceResolvingError("Reference ${unresolvedFunctionCall.functionName} is not a function"))
                 unresolvedFunctionCall
             }
         } else {
-            errors.add("Reference ${unresolvedFunctionCall.functionName} was not found")
+            errors.add(ReferenceResolvingError("Reference ${unresolvedFunctionCall.functionName} was not found"))
             unresolvedFunctionCall
         }
     }
@@ -42,11 +42,11 @@ class ReferenceResolvingVisitor(
                 variableReference.type = symbol.type
                 variableReference
             } else {
-                errors.add("Reference ${unresolvedVariableReference.name} is not a variable")
+                errors.add(ReferenceResolvingError("Reference ${unresolvedVariableReference.name} is not a variable"))
                 unresolvedVariableReference
             }
         } else {
-            errors.add("Variable ${unresolvedVariableReference.name} was not found")
+            errors.add(ReferenceResolvingError("Variable ${unresolvedVariableReference.name} was not found"))
             unresolvedVariableReference
         }
     }

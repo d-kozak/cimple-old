@@ -13,7 +13,7 @@ class TypePromotingVisitor(
 
         val type = computeType(left.type, right.type)
         if (type == Type.INVALID) {
-            errors.add("Type eror in " + binaryExpression)
+            errors.add(TypeError("Type error in $binaryExpression"))
         }
 
         val result = BinaryExpression(binaryExpression.operation, left, right)

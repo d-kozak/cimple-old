@@ -1,8 +1,6 @@
 package io.dkozak.cimple
 
-import io.dkozak.cimple.ast.AstCreatingVisitor
-import io.dkozak.cimple.ast.Program
-import io.dkozak.cimple.ast.ReferenceResolvingVisitor
+import io.dkozak.cimple.ast.*
 import io.dkozak.cimple.interpret.InterpretingAstVisitor
 import io.dkozak.cimple.typesystem.TypePromotingVisitor
 import org.antlr.v4.runtime.*
@@ -66,11 +64,21 @@ fun toAst(parseTree: ParseTree): Pair<Program, SymbolTable> {
             for (msg in visitor.errors) {
                 System.err.println(msg)
             }
-            throw IllegalArgumentException()
+            terminateWithException(visitor.errors)
         }
     }
 
     return ast to symbolTable
+}
+
+fun terminateWithException(errors: MutableList<VisitorError>): Nothing {
+    for (error in errors) {
+        when (error) {
+            is TypeError -> throw TypeResolutionException(error.msg)
+            is ReferenceResolvingError -> throw ReferenceResolvingException(error.msg)
+        }
+    }
+    throw IllegalArgumentException("No errors found")
 }
 
 
