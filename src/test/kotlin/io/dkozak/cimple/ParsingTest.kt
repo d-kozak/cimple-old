@@ -50,16 +50,13 @@ class ParsingTest {
 
     @Test
     fun `One print assignment`() {
-        val input = " 10;"
+        val input = "print 10;"
 
         val ast = parse(input)
 
         val expected = Program(
                 listOf(
-                        VariableAssignment(
-                                VariableReference("x"),
-                                IntegerLiteral(10)
-                        )
+                        PrintStatement(IntegerLiteral(10))
                 )
         )
         assertEquals(expected, ast)
